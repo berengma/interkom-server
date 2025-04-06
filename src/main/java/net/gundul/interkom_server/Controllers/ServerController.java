@@ -1,6 +1,7 @@
 package net.gundul.interkom_server.Controllers;
 
 import net.gundul.interkom_server.Database.InterkomServer;
+import net.gundul.interkom_server.Impl.InterkomServiceImpl;
 import net.gundul.interkom_server.Services.InterkomService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,14 +15,18 @@ public class ServerController
 {
 	private InterkomService interkomService;
 
+	public ServerController()
+	{
+		super();
+	}
+
 	public ServerController(InterkomService interkomService)
 	{
 		super();
-		this.interkomService = interkomService;
 	}
 
 	@PostMapping()
-	public ResponseEntity<InterkomServer> saveServer(InterkomServer server)
+	public ResponseEntity<InterkomServer> saveServer(@RequestBody InterkomServer server)
 	{
 		return new ResponseEntity<InterkomServer>(interkomService.saveServer(server), HttpStatus.CREATED);
 	}
@@ -32,7 +37,7 @@ public class ServerController
 		return interkomService.getAllServers();
 	}
 
-	@GetMapping("{id")
+	@GetMapping("{id}")
 	public ResponseEntity<InterkomServer> getServerById(@PathVariable("id") Long serverId)
 	{
 		return new ResponseEntity<InterkomServer>(interkomService.getServerById(serverId), HttpStatus.OK);
