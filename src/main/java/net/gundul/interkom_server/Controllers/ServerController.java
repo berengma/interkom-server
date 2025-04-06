@@ -15,14 +15,10 @@ public class ServerController
 {
 	private InterkomService interkomService;
 
-	public ServerController()
-	{
-		super();
-	}
-
 	public ServerController(InterkomService interkomService)
 	{
 		super();
+		this.interkomService = interkomService;
 	}
 
 	@PostMapping()
@@ -54,6 +50,6 @@ public class ServerController
 	public ResponseEntity<String> deleteServer(@PathVariable("id") Long serverId)
 	{
 		interkomService.deleteServer(serverId);
-		return new ResponseEntity<String>("Server successfully dleted", HttpStatus.OK);
+		return new ResponseEntity<String>("Server successfully deleted", HttpStatus.OK);
 	}
 }

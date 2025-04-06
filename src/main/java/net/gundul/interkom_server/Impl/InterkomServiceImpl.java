@@ -6,13 +6,16 @@ import net.gundul.interkom_server.InterkomServerApplication;
 import net.gundul.interkom_server.Repositories.InterkomRepository;
 import net.gundul.interkom_server.Services.InterkomService;
 import org.springframework.boot.context.config.ConfigDataResourceNotFoundException;
+import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.util.List;
 
+@Service
 public class InterkomServiceImpl implements InterkomService
 {
 	private	InterkomRepository		interkomRepository;
+
 	public InterkomServiceImpl(InterkomRepository interkomRepository)
 	{
 		super();
