@@ -1,7 +1,6 @@
 package net.gundul.interkom_server.Controllers;
 
 import net.gundul.interkom_server.Database.InterkomServer;
-import net.gundul.interkom_server.Impl.InterkomServiceImpl;
 import net.gundul.interkom_server.Services.InterkomService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
