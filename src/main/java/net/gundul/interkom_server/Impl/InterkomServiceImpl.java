@@ -2,10 +2,8 @@ package net.gundul.interkom_server.Impl;
 
 import net.gundul.interkom_server.Database.InterkomServer;
 import net.gundul.interkom_server.Exceptions.ResourceNotFoundException;
-import net.gundul.interkom_server.InterkomServerApplication;
 import net.gundul.interkom_server.Repositories.InterkomRepository;
 import net.gundul.interkom_server.Services.InterkomService;
-import org.springframework.boot.context.config.ConfigDataResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
