@@ -1,10 +1,12 @@
 package net.gundul.interkom_server.Database;
 
+import Utils.Security;
+import Utils.Time;
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
 import java.sql.Timestamp;
 import java.util.Set;
 
@@ -13,6 +15,17 @@ import java.util.Set;
 @Table(name="servers")
 public class InterkomServer
 {
+	public InterkomServer()
+	{}
+
+	public InterkomServer(String name, String email) throws Exception
+	{
+		this.serverName = name;
+		this.email = email;
+		this.timestamp = Time.getTimestamp();
+		this.apiKey = Security.getApiKey(name, email);
+	}
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;

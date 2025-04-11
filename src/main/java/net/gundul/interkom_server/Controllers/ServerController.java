@@ -21,9 +21,11 @@ public class ServerController
 	}
 
 	@PostMapping()
-	public ResponseEntity<InterkomServer> saveServer(@RequestBody InterkomServer server)
+	public ResponseEntity<InterkomServer> saveServer(@RequestBody InterkomServer server) throws Exception
 	{
-		return new ResponseEntity<InterkomServer>(interkomService.saveServer(server), HttpStatus.CREATED);
+		InterkomServer nserv = new InterkomServer(server.getServerName(), server.getEmail());
+
+		return new ResponseEntity<InterkomServer>(interkomService.saveServer(nserv), HttpStatus.CREATED);
 	}
 
 	@GetMapping
