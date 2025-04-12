@@ -34,6 +34,16 @@ public class ServerController
 		return interkomService.getAllServers();
 	}
 
+	/*
+	@GetMapping("/api/{key}")
+	public ResponseEntity<String>	getServerByKey(@PathVariable("key") String key)
+	{
+		if (interkomService.findServerByKey(key) == null)
+			return new ResponseEntity<String>("Error", HttpStatus.NO_CONTENT);
+		return new ResponseEntity<String>("Success", HttpStatus.OK);
+	}
+	 */
+
 	@GetMapping("{id}")
 	public ResponseEntity<InterkomServer> getServerById(@PathVariable("id") Long serverId)
 	{

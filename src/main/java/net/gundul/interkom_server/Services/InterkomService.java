@@ -1,6 +1,7 @@
 package net.gundul.interkom_server.Services;
 
 import net.gundul.interkom_server.Database.InterkomServer;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
@@ -11,4 +12,5 @@ public interface InterkomService
 	InterkomServer			getServerById(Long id);
 	InterkomServer			updateServer(InterkomServer server, Long id);
 	void					deleteServer(Long id);
+	InterkomServer			findServerByKey(String key);
 }

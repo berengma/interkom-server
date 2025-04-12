@@ -35,6 +35,6 @@ public class Security
 		String		reverse = new StringBuilder(code).reverse().toString();
 		String[]	token = reverse.split("(?<=\\G.{" + length + "})");
 
-		return token [0];
+		return token[0];
 	}
 }

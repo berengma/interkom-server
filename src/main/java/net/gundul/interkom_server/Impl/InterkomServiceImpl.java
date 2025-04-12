@@ -4,6 +4,7 @@ import net.gundul.interkom_server.Database.InterkomServer;
 import net.gundul.interkom_server.Exceptions.ResourceNotFoundException;
 import net.gundul.interkom_server.Repositories.InterkomRepository;
 import net.gundul.interkom_server.Services.InterkomService;
+import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -59,5 +60,11 @@ public class InterkomServiceImpl implements InterkomService
 		interkomRepository.findById(id).orElseThrow(
 				() -> new ResourceNotFoundException("Server", "Id", id));
 		interkomRepository.deleteById(id);
+	}
+
+	@Override
+	public InterkomServer			findServerByKey(String key)
+	{
+		return interkomRepository.findByapiKey(key);
 	}
 }
