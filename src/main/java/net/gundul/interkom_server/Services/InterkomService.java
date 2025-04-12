@@ -13,4 +13,5 @@ public interface InterkomService
 	InterkomServer			updateServer(InterkomServer server, Long id);
 	void					deleteServer(Long id);
 	InterkomServer			findServerByKey(String key);
+	InterkomServer			findServerByToken(String token);
 }

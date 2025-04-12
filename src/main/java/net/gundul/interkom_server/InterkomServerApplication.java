@@ -13,9 +13,6 @@ public class InterkomServerApplication {
 	{
 		if (args.length == 0)
 			SpringApplication.run(InterkomServerApplication.class, args);
-
-		//String token = Security.getToken("325jkv35t2ughv5t8f0g4gvbgtf08zvb834r0fzv243jhvb");
-		//System.out.println("Your token is: " + token);
 	}
 
 }

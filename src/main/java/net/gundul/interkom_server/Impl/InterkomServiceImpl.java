@@ -1,7 +1,9 @@
 package net.gundul.interkom_server.Impl;
 
 import net.gundul.interkom_server.Database.InterkomServer;
+import net.gundul.interkom_server.Database.Token;
 import net.gundul.interkom_server.Exceptions.ResourceNotFoundException;
+import net.gundul.interkom_server.Repositories.AuthRepository;
 import net.gundul.interkom_server.Repositories.InterkomRepository;
 import net.gundul.interkom_server.Services.InterkomService;
 import org.springframework.data.domain.Example;
@@ -14,11 +16,13 @@ import java.util.List;
 public class InterkomServiceImpl implements InterkomService
 {
 	private	InterkomRepository		interkomRepository;
+	private AuthRepository			authRepository;
 
-	public InterkomServiceImpl(InterkomRepository interkomRepository)
+	public InterkomServiceImpl(InterkomRepository interkomRepository, AuthRepository authRepository)
 	{
 		super();
 		this.interkomRepository = interkomRepository;
+		this.authRepository = authRepository;
 	}
 
 	@Override
@@ -66,5 +70,13 @@ public class InterkomServiceImpl implements InterkomService
 	public InterkomServer			findServerByKey(String key)
 	{
 		return interkomRepository.findByapiKey(key);
+	}
+
+	@Override
+	public InterkomServer findServerByToken(String token)
+	{
+		 Token tok =  authRepository.findByToken(token);
+
+		return interkomRepository.findByToken(tok);
 	}
 }

@@ -35,4 +35,13 @@ public class Token
 	@Column(name = "timestamp")
 	private Timestamp timestamp;
 
+	public void setTimestamp()
+	{
+		this.timestamp = Time.getTimestamp();
+	}
+
+	public Long getId()
+	{
+		return this.id;
+	}
 }
