@@ -3,7 +3,6 @@ package net.gundul.interkom_server.Impl;
 import net.gundul.interkom_server.Database.InterkomServer;
 import net.gundul.interkom_server.Database.Token;
 import net.gundul.interkom_server.Repositories.AuthRepository;
-import net.gundul.interkom_server.Repositories.InterkomRepository;
 import net.gundul.interkom_server.Services.AuthService;
 import org.springframework.stereotype.Service;
 

@@ -1,5 +1,6 @@
 package net.gundul.interkom_server.Controllers;
 
+import Utils.Security;
 import net.gundul.interkom_server.Database.InterkomServer;
 import net.gundul.interkom_server.Services.AuthService;
 import net.gundul.interkom_server.Services.InterkomService;
@@ -14,21 +15,24 @@ import java.util.List;
 public class AuthController
 {
 	private AuthService authService;
-	//private InterkomService	interkomservice;
+	private InterkomService	interkomservice;
 
-	public AuthController(AuthService authService)
+	public AuthController(AuthService authService, InterkomService interkomService)
 	{
 		super();
-//		this.interkomservice = interkomService;
+		this.interkomservice = interkomService;
 		this.authService = authService;
 	}
 
 	@GetMapping
-	public ResponseEntity<String> auth(@RequestHeader (name = "apikey") String key)
+	public ResponseEntity<InterkomServer> auth(@RequestHeader (name = "apikey") String key)
 	{
-//		if (interkomservice.findServerByKey(key) == null)
-//			return new ResponseEntity<String>("Invalid API-key", HttpStatus.FORBIDDEN);
-		return new ResponseEntity<String>("Success", HttpStatus.OK);
+		InterkomServer server = interkomservice.findServerByKey(key);
+
+		if ( server == null)
+			return new ResponseEntity<InterkomServer>(server, HttpStatus.FORBIDDEN);
+
+		return new ResponseEntity<InterkomServer>(server, HttpStatus.OK);
 	}
 
 }
