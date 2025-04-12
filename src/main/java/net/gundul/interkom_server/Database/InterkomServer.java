@@ -33,7 +33,7 @@ public class InterkomServer
 	@OneToMany(mappedBy = "originServer")
 	private Set<InterkomStuff> stuff;
 
-	@Column(name = "server_name", nullable = false)
+	@Column(name = "server_name", nullable = false, unique = true)
 	private String serverName;
 
 	@Column(name = "email", nullable = false)
@@ -95,5 +95,10 @@ public class InterkomServer
 	public void setTimestamp(Timestamp timestamp)
 	{
 		this.timestamp = timestamp;
+	}
+
+	public long getId()
+	{
+		return this.id;
 	}
 }
