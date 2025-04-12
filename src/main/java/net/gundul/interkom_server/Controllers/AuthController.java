@@ -35,7 +35,7 @@ public class AuthController
 		server.setToken(token);
 		interkomservice.updateServer(server, server.getId());
 
-		return new ResponseEntity<String>("Success: " + server.getServerName(), HttpStatus.OK);
+		return new ResponseEntity<String>(server.getToken().getToken(), HttpStatus.OK);
 	}
 
 	@GetMapping("/ping")

@@ -44,4 +44,9 @@ public class Token
 	{
 		return this.id;
 	}
+
+	public String getToken()
+	{
+		return this.token;
+	}
 }
