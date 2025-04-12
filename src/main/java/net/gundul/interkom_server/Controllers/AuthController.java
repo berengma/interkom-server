@@ -1,7 +1,9 @@
 package net.gundul.interkom_server.Controllers;
 
 import Utils.Security;
+import Utils.Time;
 import net.gundul.interkom_server.Database.InterkomServer;
+import net.gundul.interkom_server.Database.Token;
 import net.gundul.interkom_server.Services.AuthService;
 import net.gundul.interkom_server.Services.InterkomService;
 import org.springframework.http.HttpStatus;
@@ -25,14 +27,19 @@ public class AuthController
 	}
 
 	@GetMapping
-	public ResponseEntity<InterkomServer> auth(@RequestHeader (name = "apikey") String key)
+	public ResponseEntity<String> auth(@RequestHeader (name = "apikey") String key)
 	{
 		InterkomServer server = interkomservice.findServerByKey(key);
 
-		if ( server == null)
-			return new ResponseEntity<InterkomServer>(server, HttpStatus.FORBIDDEN);
+		if (server == null)
+			return new ResponseEntity<String>("ERROR", HttpStatus.FORBIDDEN);
+		if (server.getToken() != null)
+			return new ResponseEntity<String>("ERROR: already registered", HttpStatus.CONFLICT);
+		Token token = new Token(key);
+		server.setToken(token);
+		interkomservice.updateServer(server, server.getId());
 
-		return new ResponseEntity<InterkomServer>(server, HttpStatus.OK);
+		return new ResponseEntity<String>("Success: " + server.getServerName(), HttpStatus.OK);
 	}
 
 }
