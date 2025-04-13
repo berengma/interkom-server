@@ -75,8 +75,10 @@ public class InterkomServiceImpl implements InterkomService
 	@Override
 	public InterkomServer findServerByToken(String token)
 	{
-		 Token tok =  authRepository.findByToken(token);
+		Token tok =  authRepository.findByToken(token);
 
+		if (tok == null)
+			return null;
 		return interkomRepository.findByToken(tok);
 	}
 }
