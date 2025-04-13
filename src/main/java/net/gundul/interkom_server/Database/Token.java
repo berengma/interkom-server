@@ -21,6 +21,7 @@ public class Token
 	{
 		this.token = Security.getToken(key);
 		this.timestamp = Time.getTimestamp();
+		this.created = Time.getTimestamp();
 	}
 
 	@Id
@@ -35,6 +36,9 @@ public class Token
 	@Column(name = "timestamp")
 	private Timestamp timestamp;
 
+	@Column(name = "created")
+	private Timestamp created;
+
 	public void setTimestamp()
 	{
 		this.timestamp = Time.getTimestamp();
@@ -48,5 +52,10 @@ public class Token
 	public String getToken()
 	{
 		return this.token;
+	}
+
+	public Timestamp getCreated()
+	{
+		return this.created;
 	}
 }

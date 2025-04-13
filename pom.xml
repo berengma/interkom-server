@@ -11,8 +11,8 @@
 	<groupId>net.gundul</groupId>
 	<artifactId>interkom-server</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>interkom-server</name>
-	<description>Standalone server to connect multiple luanti instances</description>
+	<name>interkom_server</name>
+	<description>Standalone server to connect multiple Luanti instances</description>
 	<url/>
 	<licenses>
 		<license/>

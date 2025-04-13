@@ -20,10 +20,12 @@ public class InterkomServer
 
 	public InterkomServer(String name, String email) throws Exception
 	{
-		this.serverName = name;
+		this.serverName = name.replaceAll(" ", "_");
 		this.email = email;
 		this.timestamp = Time.getTimestamp();
+		this.created = Time.getTimestamp();
 		this.apiKey = Security.getApiKey(name, email);
+		this.chatEnabled = false;
 	}
 
 	@Id
@@ -48,6 +50,12 @@ public class InterkomServer
 
 	@Column(name = "timestamp")
 	private Timestamp timestamp;
+
+	@Column(name = "created")
+	private Timestamp created;
+
+	@Column(name = "chat_enabled")
+	private Boolean chatEnabled;
 
 	public String getServerName() {
 		return serverName;
@@ -100,5 +108,15 @@ public class InterkomServer
 	public long getId()
 	{
 		return this.id;
+	}
+
+	public Timestamp getCreated()
+	{
+		return this.created;
+	}
+
+	public Boolean getChatEnabled()
+	{
+		return this.chatEnabled;
 	}
 }
