@@ -6,7 +6,6 @@ import net.gundul.interkom_server.Exceptions.ResourceNotFoundException;
 import net.gundul.interkom_server.Repositories.AuthRepository;
 import net.gundul.interkom_server.Repositories.InterkomRepository;
 import net.gundul.interkom_server.Services.InterkomService;
-import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
