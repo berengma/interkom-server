@@ -57,6 +57,9 @@ public class InterkomServer
 	@Column(name = "chat_enabled")
 	private Boolean chatEnabled;
 
+	@OneToMany(cascade = CascadeType.ALL)
+	private  Set<Player> players;
+
 	public String getServerName() {
 		return serverName;
 	}
