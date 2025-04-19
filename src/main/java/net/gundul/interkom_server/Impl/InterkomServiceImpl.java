@@ -1,6 +1,7 @@
 package net.gundul.interkom_server.Impl;
 
 import net.gundul.interkom_server.Database.InterkomServer;
+import net.gundul.interkom_server.Database.Player;
 import net.gundul.interkom_server.Database.Token;
 import net.gundul.interkom_server.Exceptions.ResourceNotFoundException;
 import net.gundul.interkom_server.Repositories.AuthRepository;
@@ -80,4 +81,5 @@ public class InterkomServiceImpl implements InterkomService
 			return null;
 		return interkomRepository.findByToken(tok);
 	}
+
 }

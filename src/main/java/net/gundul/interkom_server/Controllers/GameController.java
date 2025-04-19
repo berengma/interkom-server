@@ -39,6 +39,8 @@ public class GameController {
 		JSONObject obj = new JSONObject(player);
 		if (!obj.has("name") || !obj.has("server"))
 			return new ResponseEntity<String>("ERROR", HttpStatus.NOT_FOUND);
+		if (!obj.getString("server").equals(server.getServerName()))
+			return new ResponseEntity<String>("Evil!", HttpStatus.I_AM_A_TEAPOT);
 
 		Player newPlayer = new Player(obj.getString("name"), server);
 		playerService.savePlayer(newPlayer);

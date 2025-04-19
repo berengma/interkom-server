@@ -27,4 +27,10 @@ public class PlayerServiceImpl implements PlayerService
 	{
 		playerRepository.deleteById(id);
 	}
+
+	@Override
+	public Player findByNameAndServer(String name, Long serverId)
+	{
+		return playerRepository.findByNameAndServerId(name, serverId);
+	}
 }
