@@ -35,10 +35,10 @@ public class GameController {
 		InterkomServer server = interkomservice.findServerByToken(token);
 
 		if (server == null)
-			return new ResponseEntity<String>("ERROR", HttpStatus.FORBIDDEN);
+			return new ResponseEntity<String>("ERROR forbidden", HttpStatus.FORBIDDEN);
 		JSONObject obj = new JSONObject(player);
 		if (!obj.has("name") || !obj.has("server"))
-			return new ResponseEntity<String>("ERROR", HttpStatus.NOT_FOUND);
+			return new ResponseEntity<String>("ERROR not_found", HttpStatus.NOT_FOUND);
 		if (!obj.getString("server").equals(server.getServerName()))
 			return new ResponseEntity<String>("Evil!", HttpStatus.I_AM_A_TEAPOT);
 
@@ -47,5 +47,23 @@ public class GameController {
 
 		System.out.println(">>>> " + obj.get("name") + " <<<<\n");
 		return new ResponseEntity<String>(player, HttpStatus.OK);
+	}
+
+	@DeleteMapping("/players/{name}")
+	public ResponseEntity<String> deletePlayer(@RequestHeader(name = "token") String token,
+											   @PathVariable(name = "name") String name)
+	{
+		InterkomServer server = interkomservice.findServerByToken(token);
+
+		System.out.println("----\n"+name+"\n----\n");
+		if (server == null)
+			return new ResponseEntity<String>("ERROR", HttpStatus.FORBIDDEN);
+		Player player = playerService.findByName(name);
+		if (player == null)
+			return new ResponseEntity<String>("Unknown player", HttpStatus.NOT_FOUND);
+		System.out.println(">>>Player found: " + player.getName() + " -> " + player.getServer().getServerName() + "\n" +
+				"\n");
+		playerService.deletePlayer(player.getId());
+		return new ResponseEntity<String>(name + " deleted!", HttpStatus.OK);
 	}
 }

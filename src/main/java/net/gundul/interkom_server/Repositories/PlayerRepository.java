@@ -5,5 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface PlayerRepository extends JpaRepository<Player, Long>
 {
-	Player findByNameAndServerId(String name, Long id);
+	Player findByName(String name);
 }

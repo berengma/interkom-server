@@ -7,5 +7,5 @@ public interface PlayerService
 {
 	Player savePlayer(Player player);
 	void	deletePlayer(Long id);
-	Player findByNameAndServer(String name, Long serverId);
+	Player findByName(String name);
 }

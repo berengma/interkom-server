@@ -39,4 +39,19 @@ public class Player
 	@Getter
 	@Column(name = "created")
 	private Timestamp created;
+
+	public long getId()
+	{
+		return id;
+	}
+
+	public String getName()
+	{
+		return name;
+	}
+
+	public InterkomServer getServer()
+	{
+		return server;
+	}
 }
