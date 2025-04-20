@@ -1,5 +1,6 @@
 package net.gundul.interkom_server.Database;
 
+import Utils.Time;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
@@ -12,6 +13,25 @@ import java.sql.Timestamp;
 @Table(name="InterkomStuff")
 public class InterkomStuff
 {
+	public InterkomStuff()
+	{}
+
+	public InterkomStuff(String originServer,
+						 String sender,
+						 String receiver,
+						 InterkomServer receivingServer,
+						 String itemstack,
+						 int amount)
+	{
+		this.originServer = originServer;
+		this.sender = sender;
+		this.receiver = receiver;
+		this.receivingServer = receivingServer;
+		this.itemstack = itemstack;
+		this.amount = amount;
+		this.timestamp = Time.getTimestamp();
+	}
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
@@ -33,7 +53,7 @@ public class InterkomStuff
 
 	@ManyToOne
 	@JoinColumn(name="receiving_server", nullable = false)
-	private InterkomServer server;
+	private InterkomServer receivingServer;
 
 	@Getter
 	@Setter

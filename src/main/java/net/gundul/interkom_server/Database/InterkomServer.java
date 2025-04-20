@@ -5,8 +5,6 @@ import Utils.Time;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
 import java.sql.Timestamp;
 import java.util.Set;
 
@@ -32,9 +30,6 @@ public class InterkomServer
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 
-	@OneToMany(mappedBy = "originServer")
-	private Set<InterkomStuff> stuff;
-
 	@Column(name = "server_name", nullable = false, unique = true)
 	private String serverName;
 
@@ -59,6 +54,9 @@ public class InterkomServer
 
 	@OneToMany(cascade = CascadeType.ALL)
 	private  Set<Player> players;
+
+	@OneToMany(cascade = CascadeType.ALL)
+	private  Set<InterkomStuff> stuff;
 
 	public String getServerName() {
 		return serverName;
