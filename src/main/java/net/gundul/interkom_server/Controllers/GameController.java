@@ -49,6 +49,8 @@ public class GameController {
 		return new ResponseEntity<String>(player, HttpStatus.OK);
 	}
 
+	/* currently not available, due to Luanti bug processing DELETE requests
+
 	@DeleteMapping("/players/{name}")
 	public ResponseEntity<String> deletePlayer(@RequestHeader(name = "token") String token,
 											   @PathVariable(name = "name") String name)
@@ -66,6 +68,7 @@ public class GameController {
 		playerService.deletePlayer(player.getId());
 		return new ResponseEntity<String>(name + " deleted!", HttpStatus.OK);
 	}
+	 */
 
 	@PostMapping("/players/remove")
 	public ResponseEntity<String> removePlayer(@RequestHeader(name = "token") String token,

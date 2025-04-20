@@ -1,6 +1,5 @@
 package net.gundul.interkom_server.Database;
 
-import Utils.Security;
 import Utils.Time;
 import jakarta.persistence.*;
 import lombok.Data;
