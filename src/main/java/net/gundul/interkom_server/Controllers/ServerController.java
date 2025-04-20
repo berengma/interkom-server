@@ -70,6 +70,7 @@ public class ServerController
 		server.setToken(null);
 		interkomService.updateServer(server, server.getId());
 		authService.deleteToken(tok.getId());
+
 		return new ResponseEntity<String>("Logged off", HttpStatus.OK);
 	}
 }

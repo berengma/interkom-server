@@ -66,4 +66,22 @@ public class GameController {
 		playerService.deletePlayer(player.getId());
 		return new ResponseEntity<String>(name + " deleted!", HttpStatus.OK);
 	}
+
+	@PostMapping("/players/remove")
+	public ResponseEntity<String> removePlayer(@RequestHeader(name = "token") String token,
+												@RequestBody String player) throws ParseException {
+		InterkomServer server = interkomservice.findServerByToken(token);
+
+		if (server == null)
+			return new ResponseEntity<String>("ERROR forbidden", HttpStatus.FORBIDDEN);
+		JSONObject obj = new JSONObject(player);
+		if (!obj.has("name"))
+			return new ResponseEntity<String>("ERROR not_found", HttpStatus.NOT_FOUND);
+		Player newPlayer = playerService.findByName(obj.getString("name"));
+		if (newPlayer == null)
+			return new ResponseEntity<String>("ERROR not_found", HttpStatus.NOT_FOUND);
+		playerService.deletePlayer(newPlayer.getId());
+
+		return new ResponseEntity<String>(player, HttpStatus.OK);
+	}
 }
