@@ -1,9 +1,12 @@
 package net.gundul.interkom_server.Impl;
 
+import net.gundul.interkom_server.Database.InterkomServer;
 import net.gundul.interkom_server.Database.Player;
 import net.gundul.interkom_server.Repositories.PlayerRepository;
 import net.gundul.interkom_server.Services.PlayerService;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class PlayerServiceImpl implements PlayerService
@@ -27,9 +30,16 @@ public class PlayerServiceImpl implements PlayerService
 	{
 		playerRepository.deleteById(id);
 	}
+
 	@Override
 	public Player findByName(String name)
 	{
 		return playerRepository.findByName(name);
+	}
+
+	@Override
+	public List<Player> findByServerId(Long serverId)
+	{
+		return playerRepository.findByServerId(serverId);
 	}
 }

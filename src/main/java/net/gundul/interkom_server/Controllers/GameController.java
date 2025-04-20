@@ -6,10 +6,16 @@ import net.gundul.interkom_server.Services.AuthService;
 import net.gundul.interkom_server.Services.InterkomService;
 import net.gundul.interkom_server.Services.PlayerService;
 import org.apache.tomcat.util.json.ParseException;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
 
 
 @RestController
@@ -27,6 +33,25 @@ public class GameController {
 		this.interkomservice = interkomService;
 		this.authService = authService;
 		this.playerService = playerService;
+	}
+
+	@GetMapping("/getplayers")
+	public ResponseEntity<String> getAllPlayers(@RequestHeader(name = "token") String token)
+	{
+		InterkomServer server = interkomservice.findServerByToken(token);
+
+		if (server == null)
+			return new ResponseEntity<String>("ERROR forbidden", HttpStatus.FORBIDDEN);
+		List<Player> players = playerService.findByServerId(server.getId());
+		JSONArray names = new JSONArray();
+		Iterator<Player> iter = players.iterator();
+		while (iter.hasNext())
+			names.put(iter.next().getName());
+		JSONObject obj = new JSONObject();
+		obj.put("server", server.getServerName());
+		obj.put("players", names);
+
+		return new ResponseEntity<String>(obj.toString(), HttpStatus.OK);
 	}
 
 	@PostMapping("/players")
