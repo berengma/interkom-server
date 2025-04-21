@@ -1,5 +1,6 @@
 package net.gundul.interkom_server.Controllers;
 
+import Utils.Time;
 import net.gundul.interkom_server.Database.InterkomServer;
 import net.gundul.interkom_server.Database.Player;
 import net.gundul.interkom_server.Services.AuthService;
@@ -13,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Timestamp;
 import java.util.Iterator;
 import java.util.List;
 
@@ -22,6 +24,7 @@ public class GameController {
 	private AuthService			authService;
 	private InterkomService 	interkomservice;
 	private PlayerService		playerService;
+	private final int			expired = 30;
 
 	public GameController(AuthService authService,
 						  InterkomService interkomService,
@@ -120,9 +123,19 @@ public class GameController {
 	}
 
 	@Scheduled(cron = "30 * * * * ?")
-	public void testCron()
+	public void cleanupOrphans()
 	{
-		System.out.println(">>> YEAH, hi from Mr. Cron <<<");
+		List<InterkomServer> 		online = interkomservice.getAllServersOnline();
+		Iterator<InterkomServer>	it = online.iterator();
+		Timestamp					now = Time.getTimestamp();
+
+		while (it.hasNext())
+		{
+			InterkomServer server = it.next();
+			if (Time.getDifference(now, server.getTimestamp()) < expired )
+				continue;
+			System.out.println(">>> Force server offline: " + server.getServerName());
+		}
 	}
 
 }
