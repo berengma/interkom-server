@@ -38,20 +38,28 @@ public class GameController {
 	@GetMapping("/getplayers")
 	public ResponseEntity<String> getAllPlayers(@RequestHeader(name = "token") String token)
 	{
-		InterkomServer server = interkomservice.findServerByToken(token);
+		InterkomServer			secure = interkomservice.findServerByToken(token);
+		List<InterkomServer>	online = interkomservice.getAllServersOnline();
 
-		if (server == null)
+		if (secure == null)
 			return new ResponseEntity<String>("ERROR forbidden", HttpStatus.FORBIDDEN);
-		List<Player> players = playerService.findByServerId(server.getId());
-		JSONArray names = new JSONArray();
-		Iterator<Player> iter = players.iterator();
-		while (iter.hasNext())
-			names.put(iter.next().getName());
-		JSONObject obj = new JSONObject();
-		obj.put("server", server.getServerName());
-		obj.put("players", names);
+		JSONArray result = new JSONArray();
+		Iterator<InterkomServer>	it = online.iterator();
+		while (it.hasNext())
+		{
+			InterkomServer server = it.next();
+			JSONObject obj = new JSONObject();
+			obj.put("server", server.getServerName());
+			List<Player> players = playerService.findByServerId(server.getId());
+			Iterator<Player> jt = players.iterator();
+			JSONArray names = new JSONArray();
+			while (jt.hasNext())
+				names.put(jt.next().getName());
+			obj.put("players", names);
+			result.put(obj);
+		}
 
-		return new ResponseEntity<String>(obj.toString(), HttpStatus.OK);
+		return new ResponseEntity<String>(result.toString(), HttpStatus.OK);
 	}
 
 	@PostMapping("/players")

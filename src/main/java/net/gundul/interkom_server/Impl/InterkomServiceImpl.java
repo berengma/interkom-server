@@ -67,7 +67,7 @@ public class InterkomServiceImpl implements InterkomService
 	}
 
 	@Override
-	public InterkomServer			findServerByKey(String key)
+	public InterkomServer findServerByKey(String key)
 	{
 		return interkomRepository.findByapiKey(key);
 	}
@@ -82,4 +82,9 @@ public class InterkomServiceImpl implements InterkomService
 		return interkomRepository.findByToken(tok);
 	}
 
+	@Override
+	public List<InterkomServer>	getAllServersOnline()
+	{
+		return interkomRepository.findByTokenNotNull();
+	}
 }
