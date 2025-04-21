@@ -4,6 +4,7 @@ import Utils.Security;
 import Utils.Time;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
 
 import java.sql.Timestamp;
 import java.util.Set;
@@ -52,6 +53,7 @@ public class InterkomServer
 	@Column(name = "chat_enabled")
 	private Boolean chatEnabled;
 
+	@Getter
 	@OneToMany(cascade = CascadeType.ALL)
 	private  Set<Player> players;
 
@@ -119,5 +121,10 @@ public class InterkomServer
 	public Boolean getChatEnabled()
 	{
 		return this.chatEnabled;
+	}
+
+	public Set<Player> getPlayers()
+	{
+		return this.players;
 	}
 }

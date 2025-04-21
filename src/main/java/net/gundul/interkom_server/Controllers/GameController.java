@@ -134,8 +134,7 @@ public class GameController {
 			InterkomServer server = it.next();
 			if (Time.getDifference(now, server.getTimestamp()) < expired )
 				continue;
-			System.out.println(">>> Force server offline: " + server.getServerName());
+			interkomservice.forceServerOffline(server);
 		}
 	}
-
 }

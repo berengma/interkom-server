@@ -1,23 +1,33 @@
 package net.gundul.interkom_server.Impl;
 
+import Utils.Time;
+import lombok.Data;
 import net.gundul.interkom_server.Database.InterkomServer;
+import net.gundul.interkom_server.Database.Player;
 import net.gundul.interkom_server.Database.Token;
 import net.gundul.interkom_server.Exceptions.ResourceNotFoundException;
 import net.gundul.interkom_server.Repositories.AuthRepository;
 import net.gundul.interkom_server.Repositories.InterkomRepository;
+import net.gundul.interkom_server.Repositories.PlayerRepository;
 import net.gundul.interkom_server.Services.InterkomService;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
+@Data
 @Service
 public class InterkomServiceImpl implements InterkomService
 {
 	private	InterkomRepository		interkomRepository;
 	private AuthRepository			authRepository;
+	private PlayerRepository		playerRepository;
 
-	public InterkomServiceImpl(InterkomRepository interkomRepository, AuthRepository authRepository)
+	public InterkomServiceImpl(InterkomRepository interkomRepository,
+							   AuthRepository authRepository,
+							   PlayerRepository playerRepository)
 	{
 		super();
 		this.interkomRepository = interkomRepository;
@@ -85,5 +95,18 @@ public class InterkomServiceImpl implements InterkomService
 	public List<InterkomServer>	getAllServersOnline()
 	{
 		return interkomRepository.findByTokenNotNull();
+	}
+
+	@Override
+	public void forceServerOffline(InterkomServer server)
+	{
+		Token token = server.getToken();
+		authRepository.deleteById(token.getId());
+		Set<Player> players = server.getPlayers();
+		Iterator<Player> it = players.iterator();
+		while (it.hasNext())
+			playerRepository.deleteById(it.next().getId());
+		server.setTimestamp(Time.getTimestamp());
+		updateServer(server, server.getId());
 	}
 }

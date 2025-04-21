@@ -14,4 +14,5 @@ public interface InterkomService
 	InterkomServer			findServerByKey(String key);
 	InterkomServer			findServerByToken(String token);
 	List<InterkomServer>	getAllServersOnline();
+	void					forceServerOffline(InterkomServer server);
 }
