@@ -132,10 +132,10 @@ public class GameController {
 		while (it.hasNext())
 		{
 			InterkomServer server = it.next();
-			if (Time.getDifference(now, server.getTimestamp()) < expired )
+			if (Time.getDifference(now, server.getToken().getTimestamp()) < expired )
 				continue;
-			//interkomservice.forceServerOffline(server);
 			System.out.println(Time.getTimestamp().toString() + ") Server expired: " + server.getServerName());
+			interkomservice.forceServerOffline(server);
 		}
 	}
 }
