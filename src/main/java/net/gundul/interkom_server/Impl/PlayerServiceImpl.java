@@ -32,9 +32,9 @@ public class PlayerServiceImpl implements PlayerService
 	}
 
 	@Override
-	public Player findByName(String name)
+	public Player findByName(String name, Long id)
 	{
-		return playerRepository.findByName(name);
+		return playerRepository.findByNameAndServerId(name, id);
 	}
 
 	@Override

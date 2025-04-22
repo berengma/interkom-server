@@ -9,6 +9,6 @@ public interface PlayerService
 {
 	Player savePlayer(Player player);
 	void	deletePlayer(Long id);
-	Player findByName(String name);
+	Player findByName(String namei, Long serverId);
 	List<Player> findByServerId(Long serverId);
 }

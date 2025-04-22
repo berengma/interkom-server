@@ -114,7 +114,7 @@ public class GameController {
 		JSONObject obj = new JSONObject(player);
 		if (!obj.has("name"))
 			return new ResponseEntity<String>("ERROR not_found", HttpStatus.NOT_FOUND);
-		Player newPlayer = playerService.findByName(obj.getString("name"));
+		Player newPlayer = playerService.findByName(obj.getString("name"), server.getId());
 		if (newPlayer == null)
 			return new ResponseEntity<String>("ERROR not_found", HttpStatus.NOT_FOUND);
 		playerService.deletePlayer(newPlayer.getId());
@@ -134,7 +134,8 @@ public class GameController {
 			InterkomServer server = it.next();
 			if (Time.getDifference(now, server.getTimestamp()) < expired )
 				continue;
-			interkomservice.forceServerOffline(server);
+			//interkomservice.forceServerOffline(server);
+			System.out.println(Time.getTimestamp().toString() + ") Server expired: " + server.getServerName());
 		}
 	}
 }
