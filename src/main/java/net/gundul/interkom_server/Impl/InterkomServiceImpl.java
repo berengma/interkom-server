@@ -100,13 +100,17 @@ public class InterkomServiceImpl implements InterkomService
 	@Override
 	public void forceServerOffline(InterkomServer server)
 	{
-		Token token = server.getToken();
+		Token		token = server.getToken();
+		Set<Player>	players = server.getPlayers();
+
 		authRepository.deleteById(token.getId());
-		Set<Player> players = server.getPlayers();
-		Iterator<Player> it = players.iterator();
-		while (it.hasNext())
-			playerRepository.deleteById(it.next().getId());
-		server.setTimestamp(Time.getTimestamp());
+		playerRepository.deleteAllInBatch(players);
 		updateServer(server, server.getId());
+	}
+
+	@Override
+	public List<InterkomServer>	getAllServersOffline()
+	{
+		return interkomRepository.findByTokenIsNull();
 	}
 }

@@ -58,4 +58,9 @@ public class Token
 	{
 		return this.created;
 	}
+
+	public Timestamp getTimestamp()
+	{
+		return this.timestamp;
+	}
 }

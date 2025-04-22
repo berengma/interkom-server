@@ -126,7 +126,9 @@ public class GameController {
 	public void cleanupOrphans()
 	{
 		List<InterkomServer> 		online = interkomservice.getAllServersOnline();
+		List<InterkomServer>		offline = interkomservice.getAllServersOffline();
 		Iterator<InterkomServer>	it = online.iterator();
+		Iterator<InterkomServer>	jt = offline.iterator();
 		Timestamp					now = Time.getTimestamp();
 
 		while (it.hasNext())
@@ -136,6 +138,15 @@ public class GameController {
 				continue;
 			System.out.println(Time.getTimestamp().toString() + ") Server expired: " + server.getServerName());
 			interkomservice.forceServerOffline(server);
+		}
+		while (jt.hasNext())
+		{
+			InterkomServer server = jt.next();
+			List<Player> players = playerService.findByServerId(server.getId());
+			System.out.println(server.getId() + ") " + server.getServerName() + " - " + players.size());
+			Iterator<Player> pl = players.iterator();
+			while (pl.hasNext())
+				playerService.deletePlayer(pl.next().getId());
 		}
 	}
 }
