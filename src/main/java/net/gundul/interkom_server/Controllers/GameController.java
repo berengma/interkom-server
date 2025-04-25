@@ -100,17 +100,25 @@ public class GameController
 
 		if (secure == null)
 			return new ResponseEntity<String>("ERROR forbidden", HttpStatus.FORBIDDEN);
-		if (!obj.has("sender") || !obj.has("receiver") || !obj.has("originServer")
-			|| !obj.has("receivingServer") || !obj.has("itemStack") || !obj.has("amount"))
+		if (!obj.has("sender") ||
+				!obj.has("receiver") ||
+				!obj.has("originServer") ||
+				!obj.has("receivingServer") ||
+				!obj.has("itemStack") ||
+				!obj.has("amount"))
 			return new ResponseEntity<String>(stuff, HttpStatus.NOT_FOUND);
 		receivingServer = interkomservice.getOnlineServerByName(obj.getString("receivingServer"));
 		if (receivingServer == null)
 			return new ResponseEntity<String>(stuff, HttpStatus.NOT_FOUND);
 		if (!interkomservice.isPlayerOnline(receivingServer, obj.getString("receiver")))
 			return new ResponseEntity<String>(stuff, HttpStatus.NOT_FOUND);
-		InterkomStuff newStuff = new InterkomStuff(obj.getString("originServer"),
-				obj.getString("sender"), obj.getString("receiver"),
-				receivingServer, obj.getString("itemStack"), obj.getInt("amount"));
+		InterkomStuff newStuff = new InterkomStuff(
+				obj.getString("originServer"),
+				obj.getString("sender"),
+				obj.getString("receiver"),
+				receivingServer,
+				obj.getString("itemStack"),
+				obj.getInt("amount"));
 		stuffService.saveStuff(newStuff);
 		return new ResponseEntity<String>("ok", HttpStatus.OK);
 	}
