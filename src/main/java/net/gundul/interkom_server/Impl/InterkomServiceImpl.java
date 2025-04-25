@@ -1,6 +1,5 @@
 package net.gundul.interkom_server.Impl;
 
-import Utils.Time;
 import lombok.Data;
 import net.gundul.interkom_server.Database.InterkomServer;
 import net.gundul.interkom_server.Database.Player;
@@ -115,8 +114,22 @@ public class InterkomServiceImpl implements InterkomService
 	}
 
 	@Override
-	public InterkomServer getServerByName(String name)
+	public InterkomServer getOnlineServerByName(String name)
 	{
-		return interkomRepository.findByServerName(name);
+		return interkomRepository.findByServerNameAndTokenNotNull(name);
+	}
+
+	@Override
+	public Boolean isPlayerOnline(InterkomServer server, String playerName)
+	{
+		Set<Player>			players = server.getPlayers();
+		Iterator<Player>	iter = players.iterator();
+
+		while (iter.hasNext())
+		{
+			if (iter.next().getName().equals(playerName))
+				return true;
+		}
+		return false;
 	}
 }

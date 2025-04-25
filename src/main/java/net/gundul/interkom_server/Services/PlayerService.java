@@ -7,8 +7,8 @@ import java.util.List;
 
 public interface PlayerService
 {
-	Player savePlayer(Player player);
-	void	deletePlayer(Long id);
-	Player findByName(String namei, Long serverId);
-	List<Player> findByServerId(Long serverId);
+	Player			savePlayer(Player player);
+	void			deletePlayer(Long id);
+	Player			findByName(String namei, Long serverId);
+	List<Player>	findByServerId(Long serverId);
 }

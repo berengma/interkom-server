@@ -2,10 +2,12 @@ package net.gundul.interkom_server.Controllers;
 
 import Utils.Time;
 import net.gundul.interkom_server.Database.InterkomServer;
+import net.gundul.interkom_server.Database.InterkomStuff;
 import net.gundul.interkom_server.Database.Player;
 import net.gundul.interkom_server.Services.AuthService;
 import net.gundul.interkom_server.Services.InterkomService;
 import net.gundul.interkom_server.Services.PlayerService;
+import net.gundul.interkom_server.Services.StuffService;
 import org.apache.tomcat.util.json.ParseException;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -20,20 +22,24 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/game")
-public class GameController {
+public class GameController
+{
 	private AuthService			authService;
 	private InterkomService 	interkomservice;
 	private PlayerService		playerService;
+	private StuffService		stuffService;
 	private final int			expired = 30;
 
 	public GameController(AuthService authService,
 						  InterkomService interkomService,
-						  PlayerService playerService)
+						  PlayerService playerService,
+						  StuffService stuffService)
 	{
 		super();
 		this.interkomservice = interkomService;
 		this.authService = authService;
 		this.playerService = playerService;
+		this.stuffService = stuffService;
 	}
 
 	@GetMapping("/getplayers")
@@ -65,7 +71,8 @@ public class GameController {
 
 	@PostMapping("/players")
 	public ResponseEntity<String> updatePlayers(@RequestHeader(name = "token") String token,
-												@RequestBody String player) throws ParseException {
+												@RequestBody String player) throws ParseException
+	{
 		InterkomServer server = interkomservice.findServerByToken(token);
 
 		if (server == null)
@@ -83,25 +90,29 @@ public class GameController {
 		return new ResponseEntity<String>(player, HttpStatus.OK);
 	}
 
-	@PostMapping("/stuff")
+	@PostMapping("/dropstuff")
 	public ResponseEntity<String> addStuff(@RequestHeader(name = "token") String token,
-										   @RequestBody String stuff) throws ParseException {
+										   @RequestBody String stuff) throws ParseException
+	{
 		JSONObject		obj = new JSONObject(stuff);
 		InterkomServer	receivingServer = null;
+		InterkomServer	secure = interkomservice.findServerByToken(token);
 
+		if (secure == null)
+			return new ResponseEntity<String>("ERROR forbidden", HttpStatus.FORBIDDEN);
 		if (!obj.has("sender") || !obj.has("receiver") || !obj.has("originServer")
 			|| !obj.has("receivingServer") || !obj.has("itemStack") || !obj.has("amount"))
 			return new ResponseEntity<String>(stuff, HttpStatus.NOT_FOUND);
-		receivingServer = interkomservice.
-
-		if (!obj.getString("server").equals(server.getServerName()))
-			return new ResponseEntity<String>("Evil!", HttpStatus.I_AM_A_TEAPOT);
-
-		Player newPlayer = new Player(obj.getString("name"), server);
-		playerService.savePlayer(newPlayer);
-
-		System.out.println(">>>> " + obj.get("name") + " <<<<\n");
-		return new ResponseEntity<String>(player, HttpStatus.OK);
+		receivingServer = interkomservice.getOnlineServerByName(obj.getString("receivingServer"));
+		if (receivingServer == null)
+			return new ResponseEntity<String>(stuff, HttpStatus.NOT_FOUND);
+		if (!interkomservice.isPlayerOnline(receivingServer, obj.getString("receiver")))
+			return new ResponseEntity<String>(stuff, HttpStatus.NOT_FOUND);
+		InterkomStuff newStuff = new InterkomStuff(obj.getString("originServer"),
+				obj.getString("sender"), obj.getString("receiver"),
+				receivingServer, obj.getString("itemStack"), obj.getInt("amount"));
+		stuffService.saveStuff(newStuff);
+		return new ResponseEntity<String>("ok", HttpStatus.OK);
 	}
 
 	/* currently not available, due to Luanti bug processing DELETE requests
@@ -127,7 +138,8 @@ public class GameController {
 
 	@PostMapping("/players/remove")
 	public ResponseEntity<String> removePlayer(@RequestHeader(name = "token") String token,
-												@RequestBody String player) throws ParseException {
+												@RequestBody String player) throws ParseException
+	{
 		InterkomServer server = interkomservice.findServerByToken(token);
 
 		if (server == null)
