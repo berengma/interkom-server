@@ -12,4 +12,5 @@ public interface InterkomRepository extends JpaRepository<InterkomServer, Long>
 	InterkomServer			findByToken(Token token);
 	List<InterkomServer>	findByTokenNotNull();
 	List<InterkomServer>	findByTokenIsNull();
+	InterkomServer			findByServerName(String name);
 }

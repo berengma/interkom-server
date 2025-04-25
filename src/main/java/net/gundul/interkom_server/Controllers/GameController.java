@@ -83,6 +83,27 @@ public class GameController {
 		return new ResponseEntity<String>(player, HttpStatus.OK);
 	}
 
+	@PostMapping("/stuff")
+	public ResponseEntity<String> addStuff(@RequestHeader(name = "token") String token,
+										   @RequestBody String stuff) throws ParseException {
+		JSONObject		obj = new JSONObject(stuff);
+		InterkomServer	receivingServer = null;
+
+		if (!obj.has("sender") || !obj.has("receiver") || !obj.has("originServer")
+			|| !obj.has("receivingServer") || !obj.has("itemStack") || !obj.has("amount"))
+			return new ResponseEntity<String>(stuff, HttpStatus.NOT_FOUND);
+		receivingServer = interkomservice.
+
+		if (!obj.getString("server").equals(server.getServerName()))
+			return new ResponseEntity<String>("Evil!", HttpStatus.I_AM_A_TEAPOT);
+
+		Player newPlayer = new Player(obj.getString("name"), server);
+		playerService.savePlayer(newPlayer);
+
+		System.out.println(">>>> " + obj.get("name") + " <<<<\n");
+		return new ResponseEntity<String>(player, HttpStatus.OK);
+	}
+
 	/* currently not available, due to Luanti bug processing DELETE requests
 
 	@DeleteMapping("/players/{name}")

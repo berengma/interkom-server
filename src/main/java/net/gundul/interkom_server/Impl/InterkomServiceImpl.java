@@ -113,4 +113,10 @@ public class InterkomServiceImpl implements InterkomService
 	{
 		return interkomRepository.findByTokenIsNull();
 	}
+
+	@Override
+	public InterkomServer getServerByName(String name)
+	{
+		return interkomRepository.findByServerName(name);
+	}
 }

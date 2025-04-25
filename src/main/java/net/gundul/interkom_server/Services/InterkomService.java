@@ -16,4 +16,5 @@ public interface InterkomService
 	List<InterkomServer>	getAllServersOnline();
 	void					forceServerOffline(InterkomServer server);
 	List<InterkomServer>	getAllServersOffline();
+	InterkomServer			getServerByName(String name);
 }
