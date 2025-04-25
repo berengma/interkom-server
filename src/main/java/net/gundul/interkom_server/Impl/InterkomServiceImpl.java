@@ -118,18 +118,4 @@ public class InterkomServiceImpl implements InterkomService
 	{
 		return interkomRepository.findByServerNameAndTokenNotNull(name);
 	}
-
-	@Override
-	public Boolean isPlayerOnline(InterkomServer server, String playerName)
-	{
-		Set<Player>			players = server.getPlayers();
-		Iterator<Player>	iter = players.iterator();
-
-		while (iter.hasNext())
-		{
-			if (iter.next().getName().equals(playerName))
-				return true;
-		}
-		return false;
-	}
 }

@@ -76,10 +76,10 @@ public class GameController
 		InterkomServer server = interkomservice.findServerByToken(token);
 
 		if (server == null)
-			return new ResponseEntity<String>("ERROR forbidden", HttpStatus.FORBIDDEN);
+			return new ResponseEntity<String>("NO ACCESS!", HttpStatus.FORBIDDEN);
 		JSONObject obj = new JSONObject(player);
 		if (!obj.has("name") || !obj.has("server"))
-			return new ResponseEntity<String>("ERROR not_found", HttpStatus.NOT_FOUND);
+			return new ResponseEntity<String>("INVALID REQUEST", HttpStatus.NOT_FOUND);
 		if (!obj.getString("server").equals(server.getServerName()))
 			return new ResponseEntity<String>("Evil!", HttpStatus.I_AM_A_TEAPOT);
 
@@ -99,7 +99,8 @@ public class GameController
 		InterkomServer	secure = interkomservice.findServerByToken(token);
 
 		if (secure == null)
-			return new ResponseEntity<String>("ERROR forbidden", HttpStatus.FORBIDDEN);
+			return new ResponseEntity<String>("NO ACCESS!", HttpStatus.FORBIDDEN);
+		System.out.println(obj.toString());
 		if (!obj.has("sender") ||
 				!obj.has("receiver") ||
 				!obj.has("originServer") ||
@@ -107,11 +108,14 @@ public class GameController
 				!obj.has("itemStack") ||
 				!obj.has("amount"))
 			return new ResponseEntity<String>(stuff, HttpStatus.NOT_FOUND);
+		System.out.println("obj is valid");
 		receivingServer = interkomservice.getOnlineServerByName(obj.getString("receivingServer"));
 		if (receivingServer == null)
 			return new ResponseEntity<String>(stuff, HttpStatus.NOT_FOUND);
-		if (!interkomservice.isPlayerOnline(receivingServer, obj.getString("receiver")))
+		System.out.println("Receiving server is valid");
+		if (playerService.findByName(obj.getString("receiver"), receivingServer.getId()) == null)
 			return new ResponseEntity<String>(stuff, HttpStatus.NOT_FOUND);
+		System.out.println("Receiving player is online");
 		InterkomStuff newStuff = new InterkomStuff(
 				obj.getString("originServer"),
 				obj.getString("sender"),

@@ -17,5 +17,4 @@ public interface InterkomService
 	void					forceServerOffline(InterkomServer server);
 	List<InterkomServer>	getAllServersOffline();
 	InterkomServer			getOnlineServerByName(String name);
-	Boolean					isPlayerOnline(InterkomServer server, String playerName);
 }
