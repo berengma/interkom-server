@@ -127,4 +127,9 @@ public class InterkomServer
 	{
 		return this.players;
 	}
+
+	public Set<InterkomStuff> getStuff()
+	{
+		return this.stuff;
+	}
 }
