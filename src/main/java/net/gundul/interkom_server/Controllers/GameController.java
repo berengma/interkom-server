@@ -1,6 +1,7 @@
 package net.gundul.interkom_server.Controllers;
 
 import Utils.Time;
+import lombok.Data;
 import net.gundul.interkom_server.Database.InterkomServer;
 import net.gundul.interkom_server.Database.InterkomStuff;
 import net.gundul.interkom_server.Database.Player;
@@ -20,6 +21,7 @@ import java.sql.Timestamp;
 import java.util.Iterator;
 import java.util.List;
 
+@Data
 @RestController
 @RequestMapping("/api/game")
 public class GameController
@@ -126,6 +128,33 @@ public class GameController
 		stuffService.saveStuff(newStuff);
 		return new ResponseEntity<String>("ok", HttpStatus.OK);
 	}
+
+	@GetMapping("/pullstuff")
+	public ResponseEntity<String> getStuffForServer(@RequestHeader(name = "token") String token)
+	{
+		InterkomServer secure = interkomservice.findServerByToken(token);
+
+		if (secure == null)
+			return new ResponseEntity<String>("ERROR forbidden", HttpStatus.FORBIDDEN);
+		List<InterkomStuff> allStuff = stuffService.getAllStuffForServer(secure.getId());
+		Iterator<InterkomStuff> it = allStuff.iterator();
+		JSONArray result = new JSONArray();
+		while (it.hasNext())
+		{
+			JSONObject obj = new JSONObject();
+			InterkomStuff newStuff = it.next();
+			obj.put("originServer", newStuff.getOriginServer());
+			obj.put("sender", newStuff.getSender());
+			obj.put("receiver", newStuff.getReceiver());
+			obj.put("receivingServer", secure.getServerName());
+			obj.put("itemStack", newStuff.getItemStack());
+			obj.put("amount", newStuff.getAmount());
+			result.put(obj);
+		}
+		stuffService.deleteInWhole(allStuff);
+		return new ResponseEntity<String>(result.toString(), HttpStatus.OK);
+	}
+
 
 	/* currently not available, due to Luanti bug processing DELETE requests
 

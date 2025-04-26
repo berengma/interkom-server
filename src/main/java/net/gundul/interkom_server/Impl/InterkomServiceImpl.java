@@ -31,6 +31,7 @@ public class InterkomServiceImpl implements InterkomService
 		super();
 		this.interkomRepository = interkomRepository;
 		this.authRepository = authRepository;
+		this.playerRepository = playerRepository;
 	}
 
 	@Override
@@ -100,11 +101,13 @@ public class InterkomServiceImpl implements InterkomService
 	public void forceServerOffline(InterkomServer server)
 	{
 		Token		token = server.getToken();
-		Set<Player>	players = server.getPlayers();
+		Set<Player>	players = null;
 
-		playerRepository.deleteAllInBatch(players);
-		authRepository.deleteById(token.getId());
+		server.setToken(null);
 		updateServer(server, server.getId());
+		players = server.getPlayers();
+		authRepository.deleteById(token.getId());
+		playerRepository.deleteAllInBatch(players);
 	}
 
 	@Override

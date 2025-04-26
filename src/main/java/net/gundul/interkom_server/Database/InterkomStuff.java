@@ -3,8 +3,6 @@ package net.gundul.interkom_server.Database;
 import Utils.Time;
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.sql.Timestamp;
 
@@ -36,18 +34,12 @@ public class InterkomStuff
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 
-	@Getter
-	@Setter
 	@Column(name = "origin_server", nullable = false)
 	private String originServer;
 
-	@Getter
-	@Setter
 	@Column(name = "sender", nullable = false)
 	private String sender;
 
-	@Getter
-	@Setter
 	@Column(name = "receiver", nullable = false)
 	private String receiver;
 
@@ -55,18 +47,52 @@ public class InterkomStuff
 	@JoinColumn(name="receiving_server", nullable = false)
 	private InterkomServer receivingServer;
 
-	@Getter
-	@Setter
 	@Column(name = "itemstack", nullable = false)
 	private String itemstack;
 
-	@Getter
-	@Setter
 	@Column(name = "amount", nullable = false)
 	private int amount;
 
-	@Setter
-	@Getter
 	@Column(name = "timestamp")
 	private Timestamp timestamp;
+
+	public long getid()
+	{
+		return this.id;
+	}
+
+	public String getOriginServer()
+	{
+		return this.originServer;
+	}
+
+	public String getSender()
+	{
+		return this.sender;
+	}
+
+	public String getReceiver()
+	{
+		return this.receiver;
+	}
+
+	public InterkomServer getReceivingServer()
+	{
+		return this.receivingServer;
+	}
+
+	public String getItemStack()
+	{
+		return this.itemstack;
+	}
+
+	public int getAmount()
+	{
+		return this.amount;
+	}
+
+	public Timestamp getTimestamp()
+	{
+		return this.timestamp;
+	}
 }

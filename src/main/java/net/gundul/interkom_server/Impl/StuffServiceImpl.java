@@ -5,6 +5,8 @@ import net.gundul.interkom_server.Repositories.StuffRepository;
 import net.gundul.interkom_server.Services.StuffService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class StuffServiceImpl implements StuffService
 {
@@ -20,5 +22,23 @@ public class StuffServiceImpl implements StuffService
 	public InterkomStuff saveStuff(InterkomStuff stuff)
 	{
 		return stuffRepository.save(stuff);
+	}
+
+	@Override
+	public List<InterkomStuff> getAllStuffForServer(Long id)
+	{
+		return stuffRepository.findByReceivingServerId(id);
+	}
+
+	@Override
+	public void deleteStuffById(Long id)
+	{
+		stuffRepository.deleteById(id);
+	}
+
+	@Override
+	public void deleteInWhole(List<InterkomStuff> stuff)
+	{
+		stuffRepository.deleteAllInBatch(stuff);
 	}
 }
