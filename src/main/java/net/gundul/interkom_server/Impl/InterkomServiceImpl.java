@@ -102,8 +102,8 @@ public class InterkomServiceImpl implements InterkomService
 		Token		token = server.getToken();
 		Set<Player>	players = server.getPlayers();
 
-		authRepository.deleteById(token.getId());
 		playerRepository.deleteAllInBatch(players);
+		authRepository.deleteById(token.getId());
 		updateServer(server, server.getId());
 	}
 
