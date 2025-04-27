@@ -218,9 +218,7 @@ public class GameController
 			InterkomServer server = jt.next();
 			List<Player> players = playerService.findByServerId(server.getId());
 			System.out.println(server.getId() + ") " + server.getServerName() + " - " + players.size());
-			Iterator<Player> pl = players.iterator();
-			while (pl.hasNext())
-				playerService.deletePlayer(pl.next().getId());
+			playerService.deleteInWhole(players);
 		}
 	}
 }

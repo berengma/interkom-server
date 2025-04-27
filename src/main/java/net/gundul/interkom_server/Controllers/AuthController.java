@@ -5,6 +5,7 @@ import net.gundul.interkom_server.Database.InterkomServer;
 import net.gundul.interkom_server.Database.Token;
 import net.gundul.interkom_server.Services.AuthService;
 import net.gundul.interkom_server.Services.InterkomService;
+import net.gundul.interkom_server.Services.PlayerService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,13 +19,17 @@ public class AuthController
 {
 	private AuthService 	authService;
 	private InterkomService	interkomservice;
+	private PlayerService	playerService;
 	private final int		tokenTimeout = 300;
 
-	public AuthController(AuthService authService, InterkomService interkomService)
+	public AuthController(AuthService authService,
+						  InterkomService interkomService,
+						  PlayerService playerService)
 	{
 		super();
 		this.interkomservice = interkomService;
 		this.authService = authService;
+		this.playerService = playerService;
 	}
 
 	@GetMapping
@@ -38,6 +43,7 @@ public class AuthController
 			return new ResponseEntity<String>("ERROR: already registered", HttpStatus.CONFLICT);
 		Token token = new Token(key);
 		server.setToken(token);
+		playerService.deleteInWhole(playerService.findByServerId(server.getId()));
 		interkomservice.updateServer(server, server.getId());
 
 		return new ResponseEntity<String>(

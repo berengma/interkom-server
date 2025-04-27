@@ -42,4 +42,10 @@ public class PlayerServiceImpl implements PlayerService
 	{
 		return playerRepository.findByServerId(serverId);
 	}
+
+	@Override
+	public void deleteInWhole(List<Player> players)
+	{
+		playerRepository.deleteAllInBatch(players);
+	}
 }
