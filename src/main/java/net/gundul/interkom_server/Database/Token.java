@@ -25,6 +25,7 @@ public class Token
 	}
 
 	@Id
+	@Getter
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 
@@ -33,34 +34,11 @@ public class Token
 	private String token;
 
 	@Getter
+	@Setter
 	@Column(name = "timestamp")
 	private Timestamp timestamp;
 
+	@Getter
 	@Column(name = "created")
 	private Timestamp created;
-
-	public void setTimestamp()
-	{
-		this.timestamp = Time.getTimestamp();
-	}
-
-	public Long getId()
-	{
-		return this.id;
-	}
-
-	public String getToken()
-	{
-		return this.token;
-	}
-
-	public Timestamp getCreated()
-	{
-		return this.created;
-	}
-
-	public Timestamp getTimestamp()
-	{
-		return this.timestamp;
-	}
 }

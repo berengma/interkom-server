@@ -1,5 +1,6 @@
 package net.gundul.interkom_server.Impl;
 
+import Utils.Time;
 import net.gundul.interkom_server.Database.InterkomServer;
 import net.gundul.interkom_server.Database.Token;
 import net.gundul.interkom_server.Exceptions.ResourceNotFoundException;
@@ -28,7 +29,7 @@ public class AuthServiceImpl implements AuthService
 	public Token updateToken(Token token, Long id) {
 		Token existingToken = authRepository.findById(id).orElseThrow(
 				() -> new ResourceNotFoundException("Token", "ID", id));
-		existingToken.setTimestamp();
+		existingToken.setTimestamp(Time.getTimestamp());
 		authRepository.save(existingToken);
 		return existingToken;
 	}

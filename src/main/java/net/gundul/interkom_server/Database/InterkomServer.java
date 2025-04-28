@@ -5,6 +5,7 @@ import Utils.Time;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.sql.Timestamp;
 import java.util.Set;
@@ -28,28 +29,42 @@ public class InterkomServer
 	}
 
 	@Id
+	@Getter
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 
+	@Getter
+	@Setter
 	@Column(name = "server_name", nullable = false, unique = true)
 	private String serverName;
 
+	@Getter
+	@Setter
 	@Column(name = "email", nullable = false)
 	private String email;
 
+	@Getter
+	@Setter
 	@Column(name = "api_key")
 	private String apiKey;
 
 	@OneToOne(cascade = CascadeType.ALL)
+	@Getter
+	@Setter
 	@JoinColumn(name = "token", referencedColumnName = "id")
 	private Token token;
 
+	@Getter
+	@Setter
 	@Column(name = "timestamp")
 	private Timestamp timestamp;
 
+	@Getter
 	@Column(name = "created")
 	private Timestamp created;
 
+	@Getter
+	@Setter
 	@Column(name = "chat_enabled")
 	private Boolean chatEnabled;
 
@@ -57,79 +72,7 @@ public class InterkomServer
 	@OneToMany(cascade = CascadeType.ALL)
 	private  Set<Player> players;
 
+	@Getter
 	@OneToMany(cascade = CascadeType.ALL)
 	private  Set<InterkomStuff> stuff;
-
-	public String getServerName() {
-		return serverName;
-	}
-
-	public void setServerName(String serverName) {
-		this.serverName = serverName;
-	}
-
-	public String getEmail()
-	{
-		return this.email;
-	}
-
-	public void setEmail(String email)
-	{
-		this.email = email;
-	}
-
-	public String getApiKey()
-	{
-		return this.apiKey;
-	}
-
-	public void setApiKey(String apikey)
-	{
-		this.apiKey = apikey;
-	}
-
-	public Token getToken()
-	{
-		return this.token;
-	}
-
-	public void setToken(Token token)
-	{
-		this.token = token;
-	}
-
-	public Timestamp getTimestamp()
-	{
-		return this.timestamp;
-	}
-
-	public void setTimestamp(Timestamp timestamp)
-	{
-		this.timestamp = timestamp;
-	}
-
-	public long getId()
-	{
-		return this.id;
-	}
-
-	public Timestamp getCreated()
-	{
-		return this.created;
-	}
-
-	public Boolean getChatEnabled()
-	{
-		return this.chatEnabled;
-	}
-
-	public Set<Player> getPlayers()
-	{
-		return this.players;
-	}
-
-	public Set<InterkomStuff> getStuff()
-	{
-		return this.stuff;
-	}
 }

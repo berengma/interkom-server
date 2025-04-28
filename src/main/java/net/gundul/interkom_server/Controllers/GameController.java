@@ -147,7 +147,7 @@ public class GameController
 			obj.put("sender", newStuff.getSender());
 			obj.put("receiver", newStuff.getReceiver());
 			obj.put("receivingServer", secure.getServerName());
-			obj.put("itemStack", newStuff.getItemStack());
+			obj.put("itemStack", newStuff.getItemstack());
 			obj.put("amount", newStuff.getAmount());
 			result.put(obj);
 		}
