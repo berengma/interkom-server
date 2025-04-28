@@ -9,6 +9,7 @@ import net.gundul.interkom_server.Repositories.AuthRepository;
 import net.gundul.interkom_server.Repositories.InterkomRepository;
 import net.gundul.interkom_server.Repositories.PlayerRepository;
 import net.gundul.interkom_server.Services.InterkomService;
+import org.springframework.orm.jpa.JpaSystemException;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -100,14 +101,18 @@ public class InterkomServiceImpl implements InterkomService
 	@Override
 	public void forceServerOffline(InterkomServer server)
 	{
-		Token		token = server.getToken();
-		Set<Player>	players = null;
+		Token token = server.getToken();
+		Set<Player> players = null;
 
 		server.setToken(null);
 		updateServer(server, server.getId());
 		players = server.getPlayers();
 		authRepository.deleteById(token.getId());
-		playerRepository.deleteAllInBatch(players);
+		try {
+			playerRepository.deleteAllInBatch(players);
+		} catch (JpaSystemException exception) {
+			System.out.println(exception.getLocalizedMessage());
+		}
 	}
 
 	@Override
