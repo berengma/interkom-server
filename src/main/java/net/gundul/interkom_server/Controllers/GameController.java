@@ -109,15 +109,15 @@ public class GameController
 				!obj.has("receivingServer") ||
 				!obj.has("itemStack") ||
 				!obj.has("amount"))
-			return new ResponseEntity<String>(stuff, HttpStatus.NOT_FOUND);
+			return new ResponseEntity<String>(stuff, HttpStatus.EXPECTATION_FAILED);
 		System.out.println("obj is valid");
 		receivingServer = interkomservice.getOnlineServerByName(obj.getString("receivingServer"));
 		if (receivingServer == null)
-			return new ResponseEntity<String>(stuff, HttpStatus.NOT_FOUND);
+			return new ResponseEntity<String>(stuff, HttpStatus.SERVICE_UNAVAILABLE);
 		System.out.println("Receiving server is valid");
 		if (playerService.findByName(obj.getString("receiver"), receivingServer.getId()) == null)
 			return new ResponseEntity<String>(stuff, HttpStatus.NOT_FOUND);
-		System.out.println("Receiving player is online");
+		System.out.println("Receiving player " + obj.getString("receiver") + " is online");
 		InterkomStuff newStuff = new InterkomStuff(
 				obj.getString("originServer"),
 				obj.getString("sender"),
@@ -126,7 +126,7 @@ public class GameController
 				obj.getString("itemStack"),
 				obj.getInt("amount"));
 		stuffService.saveStuff(newStuff);
-		return new ResponseEntity<String>("ok", HttpStatus.OK);
+		return new ResponseEntity<String>("{}", HttpStatus.OK);
 	}
 
 	@GetMapping("/pullstuff")
