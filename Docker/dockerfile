@@ -1,5 +1,12 @@
-FROM	alpine:latest
-RUN		apk add --no-cache vim git openjdk17-jdk maven
+FROM		alpine:latest
+RUN			apk add --no-cache vim git openjdk17-jdk maven bash #postgresql15 postgresql15-contrib postgresql15-openrc openrc
+RUN			adduser -D -h /home/interkom interkom 
+USER		interkom
+WORKDIR		/home/interkom
+RUN			git clone https://github.com/berengma/interkom-server.git
+WORKDIR		/home/interkom/interkom-server
+RUN			mvn clean install -DskipTests 
+COPY		./startup.sh /tmp/startup.sh
 
-EXPOSE	8080
-CMD		["sh"]
+EXPOSE		8080
+CMD			["bash", "/tmp/startup.sh"]

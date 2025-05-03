@@ -1,0 +1,28 @@
+services:
+
+  database:
+    image: postgres
+    container_name: database
+    environment:
+      - POSTGRES_PASSWORD
+      - POSTGRES_USER
+      - POSTGRES_DB: "interkom"
+    restart: unless-stopped
+    ports:
+      - 5432:5432
+    volumes:
+      - /data
+
+  interkom-server:
+    build: ./
+    image: interkom-server
+    container_name: interkomServer
+    environment:
+      - DATASOURCE_HOST=database
+      - DATASOURCE_PORT=5432
+    ports:
+      - 8080:30000
+    restart: unless-stopped
+    depends_on: 
+      - database
+  
