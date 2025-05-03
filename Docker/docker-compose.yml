@@ -8,20 +8,23 @@ services:
       - POSTGRES_USER
       - POSTGRES_DB=interkom
     restart: unless-stopped
-    ports:
-      - 54290:5432
     volumes:
-      - /data
+      - pgdata:/var/lib/postgresql/data
 
   interkom-server:
     build: ./
     image: interkom-server
     container_name: interkomServer
     environment:
-      - DATASOURCE_HOST=database
-      - DATASOURCE_PORT=5432
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://database:5432/interkom
+      - SPRING_DATASOURCE_USERNAME=${POSTGRES_USER}
+      - SPRING_DATASOURCE_PASSWORD=${POSTGRES_PASSWORD}
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
     ports:
-      - 8080:30000
+      - ${WEB_PORT}:8080
     restart: unless-stopped
     depends_on: 
       - database
+
+volumes:
+  pgdata:
