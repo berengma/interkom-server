@@ -6,10 +6,10 @@ services:
     environment:
       - POSTGRES_PASSWORD
       - POSTGRES_USER
-      - POSTGRES_DB: "interkom"
+      - POSTGRES_DB=interkom
     restart: unless-stopped
     ports:
-      - 5432:5432
+      - 54290:5432
     volumes:
       - /data
 
@@ -25,4 +25,3 @@ services:
     restart: unless-stopped
     depends_on: 
       - database
-  
