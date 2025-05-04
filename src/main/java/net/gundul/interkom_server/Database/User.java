@@ -20,7 +20,7 @@ public class User
 	{
 		this.name = name;
 		this.salt = Security.getSalt();
-		this.password = password;
+		this.password = Security.hashPassword(password, this.salt);
 		this.created = Time.getTimestamp();
 	}
 
@@ -47,4 +47,11 @@ public class User
 	@Getter
 	@Column(name = "created")
 	private Timestamp created;
+
+	public Boolean verifyPassword(String password)
+	{
+		if (this.password.equals(Security.hashPassword(password, this.salt)))
+			return true;
+		return false;
+	}
 }
