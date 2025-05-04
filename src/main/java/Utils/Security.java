@@ -4,6 +4,9 @@ package Utils;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+import java.security.SecureRandom;
 
 public class Security
 {
@@ -36,5 +39,33 @@ public class Security
 		String[]	token = reverse.split("(?<=\\G.{" + length + "})");
 
 		return token[0];
+	}
+
+	public static String getSalt()
+	{
+		try
+		{
+			// Always use a SecureRandom generator
+			SecureRandom sr = SecureRandom.getInstance("SHA1PRNG", "SUN");
+
+			// Create array for salt
+			byte[] salt = new byte[16];
+
+			// Get a random salt
+			sr.nextBytes(salt);
+
+			// return salt
+			return salt.toString();
+		}
+		catch(NoSuchAlgorithmException e)
+		{
+			System.out.println("ERROR[SALT]: No such algorithm");
+			return "";
+		}
+		catch(NoSuchProviderException e)
+		{
+			System.out.println("ERROR[SALT]: No such provider");
+			return "";
+		}
 	}
 }

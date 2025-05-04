@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interkom Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+        .login-container {
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px; /* Fixed width */
+        }
+        input {
+            display: block;
+            margin: 10px 0;
+            padding: 10px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        button {
+            padding: 10px;
+            width: 100%;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .error {
+            color: red;
+            height: 20px; /* Fixed height for error message */
+            overflow: hidden; /* Hide overflow */
+        }
+    </style>
+</head>
+<body>
+
+<div class="login-container">
+    <h2>Interkom Login</h2>
+    <input type="text" id="username" placeholder="Enter your name" required>
+    <input type="password" id="password" placeholder="Enter your password" required>
+    <button id="loginButton" title="">OK / Send</button>
+    <div class="error" id="errorMessage"></div>
+</div>
+
+<script>
+    document.getElementById('loginButton').addEventListener('click', function() {
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+        const errorMessage = document.getElementById('errorMessage');
+        const loginButton = document.getElementById('loginButton');
+        errorMessage.textContent = ''; // Clear previous error messages
+        loginButton.title = ''; // Clear previous tooltip
+
+        // Validation
+        if (username.length < 4) {
+            const errorText = 'Username must be at least 4 characters long.';
+            errorMessage.textContent = errorText;
+            loginButton.title = errorText; // Set tooltip
+            return;
+        }
+
+        const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+        if (!passwordRegex.test(password)) {
+            const errorText = 'Password must be at least 8 characters long, contain at least one uppercase letter, one number, and one special character.';
+            errorMessage.textContent = errorText;
+            loginButton.title = errorText; // Set tooltip
+            return;
+        }
+
+        // Create a data object to send
+        const data = {
+            username: username,
+            password: password
+        };
+
+        // Send data to the server
+        fetch('http://localhost/api/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('Success:', data);
+            // Handle successful login here (e.g., redirect or show a message)
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+            // Handle error here (e.g., show an error message)
+        });
+    });
+</script>
+
+</body>
+</html>
+ 
