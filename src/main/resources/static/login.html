@@ -83,12 +83,12 @@
 
         // Create a data object to send
         const data = {
-            username: username,
+            name: username,
             password: password
         };
 
         // Send data to the server
-        fetch('http://localhost/api/login', {
+        fetch('http://localhost:8080/api/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
