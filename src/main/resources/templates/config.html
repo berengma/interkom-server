@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Configuration</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class="container mt-5">
+    <h1>Configuration</h1>
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <a class="nav-link active" data-toggle="tab" href="#users">Users</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#servers">Servers</a>
+        </li>
+    </ul>
+
+    <div class="tab-content">
+        <div id="users" class="tab-pane fade show active">
+            <h3>Users</h3>
+            <ul>
+                <li th:each="user : ${users}" th:text="${user.name}"></li>
+            </ul>
+        </div>
+        <div id="servers" class="tab-pane fade">
+            <h3>Servers</h3>
+            <ul>
+                <li th:each="server : ${servers}" th:text="${server.serverName}"></li>
+            </ul>
+        </div>
+    </div>
+</div>
+</body>
+</html>

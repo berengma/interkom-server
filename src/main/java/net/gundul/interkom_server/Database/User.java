@@ -5,6 +5,7 @@ import Utils.Time;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.sql.Timestamp;
 
@@ -13,6 +14,9 @@ import java.sql.Timestamp;
 @Table(name="Users")
 public class User
 {
+	@Transient
+	private final int tokenExpiration = 24 * 60 * 60;
+
 	public User()
 	{}
 
@@ -40,9 +44,20 @@ public class User
 	@Column(name = "password")
 	private String password;
 
+	@Setter
 	@Getter
 	@Column(name = "is_admin")
 	private Boolean isAdmin;
+
+	@Getter
+	@Setter
+	@Column(name = "token")
+	private String token;
+
+	@Getter
+	@Setter
+	@Column(name = "lastLogin")
+	private Timestamp lastLogin;
 
 	@Getter
 	@Column(name = "created")
@@ -53,5 +68,17 @@ public class User
 		if (this.password.equals(Security.hashPassword(password, this.salt)))
 			return true;
 		return false;
+	}
+
+	private void logoffUser()
+	{
+		this.token = null;
+		this.lastLogin = null;
+	}
+
+	public void autoLogoff()
+	{
+		if (Time.getDifference(this.lastLogin, Time.getTimestamp()) > this.tokenExpiration)
+			logoffUser();
 	}
 }

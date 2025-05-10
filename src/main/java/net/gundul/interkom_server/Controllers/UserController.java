@@ -1,18 +1,23 @@
 package net.gundul.interkom_server.Controllers;
 
+import Utils.Security;
+import Utils.Time;
 import net.gundul.interkom_server.Database.User;
 import net.gundul.interkom_server.Services.AuthService;
 import net.gundul.interkom_server.Services.InterkomService;
 import net.gundul.interkom_server.Services.UserService;
+import org.json.HTTP;
 import org.json.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.View;
 
 
 @Controller
-@RequestMapping("/api/login")
+@RequestMapping("/user")
 public class UserController
 {
 	private AuthService 	authService;
@@ -30,38 +35,61 @@ public class UserController
 		this.userService = userService;
 	}
 
-	@GetMapping
+	@GetMapping("login")
 	public String login()
 	{
-		return "forward:/login.html";
+		return "login.html";
 	}
 
-	@PostMapping
-	public ResponseEntity<String> getLogin(@RequestBody String user)
+	@PostMapping("login")
+	public ModelAndView getLogin(@RequestBody String user, ModelAndView mview)
 	{
-		JSONObject newUser = new JSONObject(user);
+		JSONObject		newUser = new JSONObject(user);
+		//ModelAndView	mview = new ModelAndView();
 
 		if (userService.getAllUsers().isEmpty())
 		{
 			User admin = new User(newUser.getString("name"), newUser.getString("password") );
 			admin.setIsAdmin(true);
+			admin.setLastLogin(Time.getTimestamp());
+			admin.setToken(Security.getToken(admin.getName() + admin.getSalt()));
 			userService.saveUser(admin);
 			System.out.println(">>> New admin is: " + newUser.getString("name"));
-			return new ResponseEntity<String>("SUCCESS: New admin is " + admin.getName(), HttpStatus.OK);
+			mview.setViewName("config.html");
+			mview.setStatus(HttpStatus.OK);
+			return mview;
 		}
 		User tmpUser = userService.findByName(newUser.getString("name"));
 		if (tmpUser == null)
 		{
-			return new ResponseEntity<String>("Error: " + newUser.getString("name") +
-					" is unknown", HttpStatus.NOT_FOUND);
+			mview.setViewName("login.html");
+			mview.setStatus(HttpStatus.NOT_FOUND);
+			return mview;
 		}
 		if (!tmpUser.verifyPassword(newUser.getString("password")))
 		{
-			return new ResponseEntity<String>("Error: " + newUser.getString("name") +
-					" , wrong password", HttpStatus.FORBIDDEN);
+			mview.setViewName("login.html");
+			mview.setStatus(HttpStatus.FORBIDDEN);
+			return mview;
 		}
+		tmpUser.setLastLogin(Time.getTimestamp());
+		tmpUser.setToken(Security.getToken(tmpUser.getName() + tmpUser.getSalt()));
+		userService.saveUser(tmpUser);
 		if (tmpUser.getIsAdmin())
-			return new ResponseEntity<String>("forward:/config.html", HttpStatus.OK);
-		return new ResponseEntity<String>("forward:/servers.html", HttpStatus.OK);
+		{
+			mview.setViewName("config.html");
+			mview.addObject("users", userService.getAllUsers());
+			mview.addObject("servers", interkomservice.getAllServers());
+			mview.setStatus(HttpStatus.OK);
+			return mview;
+		}
+		mview.setViewName("servers.html");
+		return mview;
+	}
+
+	@GetMapping("config")
+	public String config()
+	{
+		return "config.html";
 	}
 }
