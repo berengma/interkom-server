@@ -95,15 +95,22 @@
             },
             body: JSON.stringify(data)
         })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
+        .then(response =>
+        {
+             if (response.ok)
+             {
+                  return 'Success'; //response.text(); // or response.json() if you expect JSON
+             }
+             else
+             {
+                 throw new Error('Network response was not ok.');
+             }
         })
-        .then(data => {
-            console.log('Success:', data);
-            // Handle successful login here (e.g., redirect or show a message)
+        .then(html => {
+            console.log('Success:', 'Successfully logged in');
+            document.open();
+            document.write(html);
+            document.close();
         })
         .catch((error) => {
             console.error('Error:', error);
