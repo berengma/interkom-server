@@ -77,7 +77,7 @@ public class UserController
 		userService.saveUser(tmpUser);
 		if (tmpUser.getIsAdmin())
 		{
-			mview.setViewName("config");
+			mview.setViewName("tables");
 			mview.addObject("users", userService.getAllUsers());
 			mview.addObject("servers", interkomservice.getAllServers());
 			mview.setStatus(HttpStatus.OK);
