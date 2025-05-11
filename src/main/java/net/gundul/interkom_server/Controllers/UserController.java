@@ -38,7 +38,7 @@ public class UserController
 	@GetMapping("login")
 	public String login()
 	{
-		return "login.html";
+		return "login";
 	}
 
 	@PostMapping("login")
@@ -55,20 +55,20 @@ public class UserController
 			admin.setToken(Security.getToken(admin.getName() + admin.getSalt()));
 			userService.saveUser(admin);
 			System.out.println(">>> New admin is: " + newUser.getString("name"));
-			mview.setViewName("config.html");
+			mview.setViewName("config");
 			mview.setStatus(HttpStatus.OK);
 			return mview;
 		}
 		User tmpUser = userService.findByName(newUser.getString("name"));
 		if (tmpUser == null)
 		{
-			mview.setViewName("login.html");
+			mview.setViewName("login");
 			mview.setStatus(HttpStatus.NOT_FOUND);
 			return mview;
 		}
 		if (!tmpUser.verifyPassword(newUser.getString("password")))
 		{
-			mview.setViewName("login.html");
+			mview.setViewName("login");
 			mview.setStatus(HttpStatus.FORBIDDEN);
 			return mview;
 		}
@@ -77,19 +77,19 @@ public class UserController
 		userService.saveUser(tmpUser);
 		if (tmpUser.getIsAdmin())
 		{
-			mview.setViewName("config.html");
+			mview.setViewName("config");
 			mview.addObject("users", userService.getAllUsers());
 			mview.addObject("servers", interkomservice.getAllServers());
 			mview.setStatus(HttpStatus.OK);
 			return mview;
 		}
-		mview.setViewName("servers.html");
+		mview.setViewName("servers");
 		return mview;
 	}
 
 	@GetMapping("config")
 	public String config()
 	{
-		return "config.html";
+		return "config";
 	}
 }
