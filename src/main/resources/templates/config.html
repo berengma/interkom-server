@@ -6,6 +6,12 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <style>
+        .table-container {
+            max-height: 300px; /* Set a max height for the table */
+            overflow-y: auto; /* Enable vertical scrolling */
+        }
+    </style>
 </head>
 <body>
 <div class="container mt-5">
@@ -22,17 +28,81 @@
     <div class="tab-content">
         <div id="users" class="tab-pane fade show active">
             <h3>Users</h3>
-            <ul>
-                <li th:each="user : ${users}" th:text="${user.name}"></li>
-            </ul>
+            <div class="table-container">
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Last Login</th>
+                        <th>Is Admin</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="user : ${users}">
+                        <td th:text="${user.name}"></td>
+                        <td th:text="${user.lastLogin}"></td>
+                        <td>
+                            <input type="checkbox" th:checked="${user.isAdmin}" disabled />
+                        </td>
+                        <td>
+                            <form th:action="@{/configuration/deleteUser(id=${user.id})}" method="post">
+                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="mt-3">
+                <input type="text" id="newUsername" placeholder="New Username" required />
+                <input type="checkbox" id="isAdmin" /> Is Admin
+                <button class="btn btn-primary" th:onclick="'addUser()'">Save</button>
+            </div>
         </div>
         <div id="servers" class="tab-pane fade">
             <h3>Servers</h3>
-            <ul>
-                <li th:each="server : ${servers}" th:text="${server.serverName}"></li>
-            </ul>
+            <div class="table-container">
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>Server Name</th>
+                        <th>API Key</th>
+                        <th>Creation Date</th>
+                        <th>Last Use Date</th>
+                        <th>Email Address</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="server : ${servers}">
+                        <td th:text="${server.serverName}"></td>
+                        <td style="max-width: 150px; word-wrap: break-word;" th:text="${server.apiKey}"></td>
+                        <td th:text="${server.created}"></td>
+                        <td th:text="${server.timestamp}"></td>
+                        <td th:text="${server.email}"></td>
+                        <td>
+                            <form th:action="@{/configuration/deleteServer(id=${server.id})}" method="post">
+                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="mt-3">
+                <input type="text" id="newServerName" placeholder="Server Name" required />
+                <input type="text" id="newServerEmail" placeholder="Email Address" required />
+                <button class="btn btn-primary" th:onclick="'addServer()'">Save</button>
+            </div>
         </div>
     </div>
 </div>
-</body>
-</html>
+
+<script>
+    function addUser() {
+        const username = document.getElementById('newUsername').value;
+        const isAdmin = document.getElementById('isAdmin').checked;
+
+        //
+</script>

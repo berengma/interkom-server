@@ -6,14 +6,11 @@ import net.gundul.interkom_server.Database.User;
 import net.gundul.interkom_server.Services.AuthService;
 import net.gundul.interkom_server.Services.InterkomService;
 import net.gundul.interkom_server.Services.UserService;
-import org.json.HTTP;
 import org.json.JSONObject;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.View;
 
 
 @Controller
@@ -45,7 +42,6 @@ public class UserController
 	public ModelAndView getLogin(@RequestBody String user, ModelAndView mview)
 	{
 		JSONObject		newUser = new JSONObject(user);
-		//ModelAndView	mview = new ModelAndView();
 
 		if (userService.getAllUsers().isEmpty())
 		{
@@ -77,7 +73,7 @@ public class UserController
 		userService.saveUser(tmpUser);
 		if (tmpUser.getIsAdmin())
 		{
-			mview.setViewName("tables");
+			mview.setViewName("config");
 			mview.addObject("users", userService.getAllUsers());
 			mview.addObject("servers", interkomservice.getAllServers());
 			mview.setStatus(HttpStatus.OK);
@@ -85,11 +81,5 @@ public class UserController
 		}
 		mview.setViewName("servers");
 		return mview;
-	}
-
-	@GetMapping("config")
-	public String config()
-	{
-		return "config";
 	}
 }
