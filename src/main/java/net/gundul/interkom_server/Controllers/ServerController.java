@@ -4,9 +4,11 @@ import net.gundul.interkom_server.Database.InterkomServer;
 import net.gundul.interkom_server.Database.Token;
 import net.gundul.interkom_server.Services.AuthService;
 import net.gundul.interkom_server.Services.InterkomService;
+import net.gundul.interkom_server.Services.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 
 import java.util.List;
@@ -17,20 +19,39 @@ public class ServerController
 {
 	private InterkomService interkomService;
 	private AuthService		authService;
+	private UserService		userService;
 
-	public ServerController(InterkomService interkomService, AuthService authservice)
+	public ServerController(InterkomService interkomService,
+							AuthService authservice,
+							UserService userService)
 	{
 		super();
 		this.interkomService = interkomService;
 		this.authService = authservice;
+		this.userService = userService;
 	}
 
-	@PostMapping()
+	@PostMapping(consumes = "application/json")
 	public ResponseEntity<InterkomServer> saveServer(@RequestBody InterkomServer server) throws Exception
 	{
 		InterkomServer nserv = new InterkomServer(server.getServerName(), server.getEmail());
 
 		return new ResponseEntity<InterkomServer>(interkomService.saveServer(nserv), HttpStatus.CREATED);
+	}
+
+	@PostMapping(consumes = "application/x-www-form-urlencoded")
+	public ModelAndView createServer(@RequestParam String serverName,
+									 @RequestParam String email,
+									 ModelAndView mview) throws Exception
+	{
+		InterkomServer nserv = new InterkomServer(serverName, email);
+		interkomService.saveServer(nserv);
+
+		mview.setViewName("config");
+		mview.addObject("users", userService.getAllUsers());
+		mview.addObject("servers", interkomService.getAllServers());
+		mview.setStatus(HttpStatus.OK);
+		return mview;
 	}
 
 	@GetMapping
