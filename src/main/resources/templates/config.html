@@ -87,7 +87,7 @@
                             <span th:if="${server.token != null}" style="color: green;  font-size: 2em;">&#9679;</span>
                         </td>
                         <td>
-                            <form th:action="@{/configuration/deleteServer(id=${server.id})}" method="post">
+                            <form th:action="@{/api/servers/(id=${server.id})}" method="delete">
                                 <button type="submit" class="btn btn-danger btn-sm">Delete</button>
                             </form>
                         </td>
@@ -107,8 +107,15 @@
 </div>
 
 <script>
-    function addUser() {
-        const username = document.getElementById('newUsername').value;
-        const isAdmin = document.getElementById('isAdmin').checked;
-    }
+        // Save the token to localStorage
+        document.addEventListener("DOMContentLoaded", function() {
+            let token = '[[${token}]]';
+            console.log(token)
+            if (token !== 'null') {
+                localStorage.setItem('token', token); // Store the token in local storage
+                console.log('Token saved:', token);
+            } else {
+                console.error('No token found');
+            }
+        });
 </script>

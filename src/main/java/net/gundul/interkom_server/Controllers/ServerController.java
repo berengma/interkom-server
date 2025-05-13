@@ -74,10 +74,15 @@ public class ServerController
 	}
 
 	@DeleteMapping("{id}")
-	public ResponseEntity<String> deleteServer(@PathVariable("id") Long serverId)
+	public ModelAndView deleteServer(@PathVariable("id") Long serverId, ModelAndView mview)
 	{
 		interkomService.deleteServer(serverId);
-		return new ResponseEntity<String>("Server successfully deleted", HttpStatus.OK);
+
+		mview.setViewName("config");
+		mview.addObject("users", userService.getAllUsers());
+		mview.addObject("servers", interkomService.getAllServers());
+		mview.setStatus(HttpStatus.OK);
+		return mview;
 	}
 
 	@GetMapping("/logoff")

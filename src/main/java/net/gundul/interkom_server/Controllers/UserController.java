@@ -76,6 +76,8 @@ public class UserController
 			mview.setViewName("config");
 			mview.addObject("users", userService.getAllUsers());
 			mview.addObject("servers", interkomservice.getAllServers());
+			mview.addObject("token", tmpUser.getToken());
+			System.out.println(">>>>" + tmpUser.getToken() + "<<<<");
 			mview.setStatus(HttpStatus.OK);
 			return mview;
 		}
