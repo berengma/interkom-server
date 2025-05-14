@@ -87,9 +87,8 @@
                             <span th:if="${server.token != null}" style="color: green;  font-size: 2em;">&#9679;</span>
                         </td>
                         <td>
-                            <form th:action="@{/api/servers/(id=${server.id})}" method="delete">
-                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                            </form>
+                            <button class="btn btn-danger btn-sm" th:onclick="deleteServer('${server.serverName}')">
+                                Delete</button>
                         </td>
                     </tr>
                     </tbody>
@@ -118,4 +117,34 @@
                 console.error('No token found');
             }
         });
+
+     function deleteServer(serverName)
+     {
+        console.log(serverName);
+        const token = localStorage.getItem('token');
+        const url = '/api/servers/' + serverName;
+        const headers = {
+            'Authorization': 'Bearer ' + token,
+            'Content-Type': 'application/json'
+        };
+
+        fetch(url, {
+            method: 'DELETE',
+            headers: headers,
+            body: JSON.stringify({ serverName: serverName }) // Send the server name in the request body
+        })
+        .then(response => {
+            if (response.ok) {
+                // Handle successful deletion (e.g., remove the row from the table)
+                alert('Server deleted successfully');
+                location.reload(); // Reload the page to reflect changes
+            } else {
+                alert('Failed to delete server');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred while deleting the server');
+        });
+    }
 </script>

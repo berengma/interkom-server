@@ -73,10 +73,13 @@ public class ServerController
 				interkomService.getServerById(serverId), serverId), HttpStatus.OK);
 	}
 
-	@DeleteMapping("{id}")
-	public ModelAndView deleteServer(@PathVariable("id") Long serverId, ModelAndView mview)
+	@DeleteMapping("{name}")
+	public ModelAndView deleteServer(@PathVariable("name") String serverName,
+									 @RequestHeader (name = "Authorization") String key,
+									ModelAndView mview)
 	{
-		interkomService.deleteServer(serverId);
+		//interkomService.deleteServer(serverId);
+		System.out.println(">>>" + serverName + " must be deleted! key is: " + key);
 
 		mview.setViewName("config");
 		mview.addObject("users", userService.getAllUsers());
