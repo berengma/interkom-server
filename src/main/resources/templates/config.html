@@ -107,13 +107,17 @@
 
 <script>
         // Save the token to localStorage
-        document.addEventListener("DOMContentLoaded", function() {
+        document.addEventListener("DOMContentLoaded", function()
+        {
             let token = '[[${token}]]';
             console.log(token)
-            if (token !== 'null') {
+            if (token !== 'null')
+            {
                 localStorage.setItem('token', token); // Store the token in local storage
                 console.log('Token saved:', token);
-            } else {
+            }
+            else
+            {
                 console.error('No token found');
             }
         });
@@ -124,14 +128,13 @@
         const token = localStorage.getItem('token');
         const url = '/api/servers/' + serverName;
         const headers = {
-            'Authorization': 'Bearer ' + token,
+            'Authorization': token,
             'Content-Type': 'application/json'
         };
 
         fetch(url, {
             method: 'DELETE',
-            headers: headers,
-            body: JSON.stringify({ serverName: serverName }) // Send the server name in the request body
+            headers: headers
         })
         .then(response => {
             if (response.ok) {
