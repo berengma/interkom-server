@@ -2,6 +2,7 @@ package net.gundul.interkom_server.Controllers;
 
 import net.gundul.interkom_server.Database.InterkomServer;
 import net.gundul.interkom_server.Database.Token;
+import net.gundul.interkom_server.Database.User;
 import net.gundul.interkom_server.Services.AuthService;
 import net.gundul.interkom_server.Services.InterkomService;
 import net.gundul.interkom_server.Services.UserService;
@@ -78,13 +79,23 @@ public class ServerController
 									 @RequestHeader (name = "Authorization") String key,
 									ModelAndView mview)
 	{
-		//interkomService.deleteServer(serverId);
+		InterkomServer		server = interkomService.findServerByName(serverName);
+		User				admin = userService.findByToken(key);
 		System.out.println(">>>" + serverName + " must be deleted! key is: " + key);
 
+		if (admin == null || !admin.getIsAdmin())
+			mview.setStatus(HttpStatus.FORBIDDEN);
+		if (server == null)
+			mview.setStatus(HttpStatus.NOT_FOUND);
+		if (admin != null && admin.getIsAdmin() && server != null)
+		{
+			interkomService.forceServerOffline(server);
+			interkomService.deleteServer(server.getId());
+			mview.addObject("users", userService.getAllUsers());
+			mview.addObject("servers", interkomService.getAllServers());
+			mview.setStatus(HttpStatus.OK);
+		}
 		mview.setViewName("config");
-		mview.addObject("users", userService.getAllUsers());
-		mview.addObject("servers", interkomService.getAllServers());
-		mview.setStatus(HttpStatus.OK);
 		return mview;
 	}
 

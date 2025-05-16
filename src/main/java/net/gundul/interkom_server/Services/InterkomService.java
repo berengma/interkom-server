@@ -13,6 +13,7 @@ public interface InterkomService
 	void					deleteServer(Long id);
 	InterkomServer			findServerByKey(String key);
 	InterkomServer			findServerByToken(String token);
+	InterkomServer			findServerByName(String name);
 	List<InterkomServer>	getAllServersOnline();
 	void					forceServerOffline(InterkomServer server);
 	List<InterkomServer>	getAllServersOffline();

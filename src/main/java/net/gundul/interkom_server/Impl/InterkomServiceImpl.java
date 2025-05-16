@@ -101,9 +101,12 @@ public class InterkomServiceImpl implements InterkomService
 	@Override
 	public void forceServerOffline(InterkomServer server)
 	{
-		Token token = server.getToken();
+		Token token = null;
 		Set<Player> players = null;
 
+		if (server.getToken() == null)
+			return;
+		token = server.getToken();
 		server.setToken(null);
 		updateServer(server, server.getId());
 		players = server.getPlayers();
@@ -125,5 +128,11 @@ public class InterkomServiceImpl implements InterkomService
 	public InterkomServer getOnlineServerByName(String name)
 	{
 		return interkomRepository.findByServerNameAndTokenNotNull(name);
+	}
+
+	@Override
+	public InterkomServer findServerByName(String name)
+	{
+		return interkomRepository.findByServerName(name);
 	}
 }

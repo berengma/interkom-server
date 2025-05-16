@@ -11,4 +11,5 @@ public interface UserService
 	void			deleteInWhole(List<User> users);
 	List<User>		getAllUsers();
 	User 			findByName(String name);
+	User			findByToken(String token);
 }
