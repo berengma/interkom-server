@@ -87,8 +87,8 @@
                             <span th:if="${server.token != null}" style="color: green;  font-size: 2em;">&#9679;</span>
                         </td>
                         <td>
-                            <button class="btn btn-danger btn-sm" th:onclick="deleteServer('${server.serverName}')">
-                                Delete</button>
+                            <button class="btn btn-danger btn-sm"
+                                    th:onclick="deleteServer([[${server.serverName}]])">Delete</button>
                         </td>
                     </tr>
                     </tbody>
