@@ -81,7 +81,6 @@ public class ServerController
 	{
 		InterkomServer		server = interkomService.findServerByName(serverName);
 		User				admin = userService.findByToken(key);
-		System.out.println(">>>" + serverName + " must be deleted! key is: " + key);
 
 		if (admin == null || !admin.getIsAdmin())
 			mview.setStatus(HttpStatus.FORBIDDEN);
@@ -89,7 +88,6 @@ public class ServerController
 			mview.setStatus(HttpStatus.NOT_FOUND);
 		if (admin != null && admin.getIsAdmin() && server != null)
 		{
-			interkomService.forceServerOffline(server);
 			interkomService.deleteServer(server.getId());
 			mview.addObject("users", userService.getAllUsers());
 			mview.addObject("servers", interkomService.getAllServers());

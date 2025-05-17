@@ -72,16 +72,11 @@ public class UserController
 		tmpUser.setToken(Security.getToken(tmpUser.getName() + tmpUser.getSalt()));
 		userService.saveUser(tmpUser);
 		if (tmpUser.getIsAdmin())
-		{
-			mview.setViewName("config");
 			mview.addObject("users", userService.getAllUsers());
-			mview.addObject("servers", interkomservice.getAllServers());
-			mview.addObject("token", tmpUser.getToken());
-			System.out.println(">>>>" + tmpUser.getToken() + "<<<<");
-			mview.setStatus(HttpStatus.OK);
-			return mview;
-		}
-		mview.setViewName("servers");
+		mview.setViewName("config");
+		mview.addObject("servers", interkomservice.getAllServers());
+		mview.addObject("token", tmpUser.getToken());
+		mview.setStatus(HttpStatus.OK);
 		return mview;
 	}
 }
