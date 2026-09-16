@@ -73,14 +73,6 @@
             return;
         }
 
-        const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-        if (!passwordRegex.test(password)) {
-            const errorText = 'Password must be at least 8 characters long, contain at least one uppercase letter, one number, and one special character.';
-            errorMessage.textContent = errorText;
-            loginButton.title = errorText; // Set tooltip
-            return;
-        }
-
         // Create a data object to send
         const data = {
             name: username,
