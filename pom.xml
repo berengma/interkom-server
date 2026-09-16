@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>net.gundul</groupId>
-	<artifactId>interkom-server</artifactId>
+	<artifactId>interkom_server</artifactId>
 	<version>0.0.2-MVP</version>
 	<name>interkom_server</name>
 	<description>Standalone server to connect multiple Luanti instances</description>
