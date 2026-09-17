@@ -1,5 +1,5 @@
 FROM		alpine:latest
-RUN			apk add --no-cache vim git openjdk17-jdk maven bash #postgresql15 postgresql15-contrib postgresql15-openrc openrc
+RUN			apk add --no-cache vim git openjdk17-jdk maven bash 
 RUN			adduser -D -h /home/interkom interkom 
 USER		interkom
 WORKDIR		/home/interkom
