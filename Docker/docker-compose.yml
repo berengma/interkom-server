@@ -20,10 +20,12 @@ services:
     image: interkom-server
     container_name: interkomServer
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://database:5432/interkom
-      - SPRING_DATASOURCE_USERNAME=${POSTGRES_USER}
-      - SPRING_DATASOURCE_PASSWORD=${POSTGRES_PASSWORD}
-      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      SPRING_DATASOURCE_URL: jdbc:postgresql://database:5432/interkom
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD}
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      FRONTEND_URI: ${INTERKOM_URL}
+      FRONTEND_PORT: ${WEB_PORT}
     restart: unless-stopped
     depends_on: 
       - database
