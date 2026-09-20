@@ -43,6 +43,7 @@ public class UserController
 	{
 		JSONObject		newUser = new JSONObject(user);
 
+		System.out.println("Login Controller called!");
 		if (userService.getAllUsers().isEmpty())
 		{
 			User admin = new User(newUser.getString("name"), newUser.getString("password") );
