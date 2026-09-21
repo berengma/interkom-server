@@ -19,6 +19,8 @@ services:
     build: ./
     image: interkom-server
     container_name: interkomServer
+    env_file:
+      - .env
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://database:5432/interkom
       SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER}
