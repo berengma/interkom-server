@@ -34,3 +34,4 @@ build/
 ### other
 /src/main/resources/application.properties
 /out/artifacts/interkom_server_jar/interkom-server.jar
+/interkom-server/Docker/.env

@@ -1,5 +1,5 @@
 FROM		alpine:latest
-RUN			apk add --no-cache vim git openjdk17-jdk maven bash 
+RUN			apk add --no-cache vim git openjdk17-jdk maven bash curl
 RUN			adduser -D -h /home/interkom interkom 
 USER		interkom
 WORKDIR		/home/interkom
