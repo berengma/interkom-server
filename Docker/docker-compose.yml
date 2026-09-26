@@ -16,7 +16,10 @@ services:
       - pgdata:/var/lib/postgresql/data
 
   interkom-server:
-    build: ./
+    build:
+      context: .
+      args:
+        - GIT_BRANCH
     image: interkom-server
     container_name: interkomServer
     env_file:
@@ -43,7 +46,8 @@ services:
   reverse-proxy:
     restart: always
     depends_on:
-      - interkom-server
+      interkom-server:
+        condition: service_healthy
     image: nginx:latest
     container_name: revproxy
     env_file:
