@@ -64,6 +64,17 @@ services:
       - ./letsencrypt:/etc/letsencrypt:ro
       - ./certbot-www:/var/www/certbot:ro
 
+  certbot:
+    image: certbot/certbot:latest
+    restart: always
+    depends_on:
+      - reverse-proxy
+    networks:
+      - interkom
+    volumes:
+      - ./letsencrypt:/etc/letsencrypt
+      - ./certbot-www:/var/www/certbot
+
 volumes:
   pgdata:
 
