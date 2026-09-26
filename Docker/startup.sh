@@ -1,4 +1,4 @@
-#!/usr/bin/bash/bash
+#!/bin/bash
 echo "All setup for Interkom ! ${INTERKOM_URL}:${WEB_PORT}"
 export  INTERKOM_URL
 export  WEB_PORT

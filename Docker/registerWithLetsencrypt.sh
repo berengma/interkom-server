@@ -1,4 +1,4 @@
-#!/usr/bin/bash/bash
+#!/usr/bin/bash
 docker compose run --rm certbot certonly \
   --webroot \
   --webroot-path /var/www/certbot \
