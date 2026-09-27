@@ -35,6 +35,8 @@ fi
 echo "'$servername' will now be registered by certbot! ..."
 
 if docker compose run --rm certbot certonly \
+  --non-interactive \
+  --keep-until-expiring \
   --webroot \
   --webroot-path /var/www/certbot \
   --domain "$servername" \
@@ -68,7 +70,10 @@ SCRIPT="/etc/interkom-server/cert-renewal.sh"
 cat > "$SCRIPT" <<EOF
 #!/usr/bin/bash
 cd $SCRIPT_DIR
-if docker compose run --rm certbot renew; then
+if docker compose run \
+      --rm certbot renew \
+      --non-interactive \
+      --keep-until-expiring; then
    docker compose restart reverse-proxy
 else
    echo "Certificate renewal failed" >&2
@@ -86,4 +91,4 @@ chmod 644 "$CRON_FILE"
 echo "Cron job installed in $CRON_FILE"
 
 # Restart all containers
-docker compose restart --build
+docker compose restart
