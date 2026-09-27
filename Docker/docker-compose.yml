@@ -61,8 +61,8 @@ services:
       - 80:80
     volumes:
       - ./nginx.conf.d/default.conf.template:/etc/nginx/templates/default.conf.template:ro
-      - ./letsencrypt:/etc/letsencrypt:ro
-      - ./certbot-www:/var/www/certbot:ro
+      - /etc/interkom-server/letsencrypt:/etc/letsencrypt:ro
+      - /etc/interkom-server/certbot-www:/var/www/certbot:ro
 
   certbot:
     image: certbot/certbot:latest
@@ -72,8 +72,8 @@ services:
     networks:
       - interkom
     volumes:
-      - ./letsencrypt:/etc/letsencrypt
-      - ./certbot-www:/var/www/certbot
+      - /etc/interkom-server/letsencrypt:/etc/letsencrypt
+      - /etc/interkom-server/certbot-www:/var/www/certbot
 
 volumes:
   pgdata:
